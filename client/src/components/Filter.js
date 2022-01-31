@@ -4,7 +4,7 @@ import {ascOrDsc, changeFilterTypes, dietFilter } from "../redux/actions/actions
 import { getAllFood } from "../redux/actions/actions";
 
 export const Filter = ()=>{
-    const dietTypes=useSelector(state=>state.dietTypes);
+    const dietData=useSelector(state=>state.dietTypes);
     const [valueOrder,setValueOrder]=useState({option:""});
     const [valueDiet,setValueDiet]=useState([]);
     let reset=false;
@@ -45,15 +45,15 @@ export const Filter = ()=>{
     return (
         <div>
             <form >
-                <select value={valueOrder} onChange={handleChangeOrder}>
-                    <option >Order (a-z)</option>
+                <select name="select" onChange={handleChangeOrder}>
+                    <option value="none">Order (a-z)</option>
                     <option value="asc">Ascendent</option>
                     <option value="dsc">Descendent</option>
                 </select>
             </form>
 
             <form onSubmit={handleSubmitDiet}> 
-                {dietTypes?.map((d,i)=>{
+                {dietData?.map(({dietType:d},i)=>{
                     return <label key={i} htmlFor={`cbox${i}`}><input type="checkbox"  value={d} id={`cbox${i}`} onChange={handleChangeDiet}/>{d[0].toUpperCase()+d.slice(1)}</label>
                 })}
                 <input type="submit"/>

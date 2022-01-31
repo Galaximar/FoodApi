@@ -1,12 +1,14 @@
-import { DIET_FILTER, DIET_TYPES, FILTER_TYPES, GET_ALL_FOOD, ORDERaz } from "../actions/actions";
+import { DATA_FOOD_CREATED, DIET_FILTER, DIET_TYPES, FILTER_TYPES, FOOD_INFO, GET_ALL_FOOD, ORDERaz, ORDER_BY_POINTS } from "../actions/actions";
 import { START } from "../actions/actions";
 import { END } from "../actions/actions";
 
 const initialState = {
     food: [],
+    foodDetail:[],
     dietTypes:[],
     start:0,
     end:0,
+    foodCreatedId:undefined,
     filterTypes:{
         orderAlphabetic: "",
         byDiet: [],
@@ -19,6 +21,8 @@ const reducer = (state = initialState, action) => {
         case GET_ALL_FOOD:
             foodOriginal=action.payload;
             return {...state,food:action.payload}
+        case FOOD_INFO:
+            return {...state,foodDetail:action.payload}
         case START:
             return {...state,start:action.payload}
         case END:
@@ -43,18 +47,34 @@ const reducer = (state = initialState, action) => {
                 })
             }
             return {...state,food:foodOrder}
-        case DIET_TYPES:
-            let diets=action.payload;
-            let dietsArray=[];
-            for (const key in diets) {
-                dietsArray.push(diets[key]);
+        case ORDER_BY_POINTS:
+            let {options}=action.payload; 
+            let foodToOrder =[...state.food]
+            if(options!==""){
+                foodToOrder=foodToOrder.sort((a,b)=>{
+                    if(option==="asc"){
+                        if((a.spoonacularScore||a.points)>(b.spoonacularScore||b.points)) return 1 
+                        if((a.spoonacularScore||a.points)<(b.spoonacularScore||b.points)) return -1
+                        return 0;
+                    } else {
+                        if((a.spoonacularScore||a.points)>(b.spoonacularScore||b.points)) return -1
+                        if((a.spoonacularScore||a.points)<(b.spoonacularScore||b.points)) return 1
+                        return 0;
+                    }
+                })
             }
-            return {...state,dietTypes:dietsArray}
+            return {...state,food:foodToOrder}
+        case DIET_TYPES:
+            let dietsData=action.payload;
+            return {...state,dietTypes:dietsData}
+        case DATA_FOOD_CREATED:
+            return {...state,foodCreatedId:action.payload.id}
         case DIET_FILTER:
             let dietsReciveds=action.payload;  
-            if(dietsReciveds){
+            let foodDiet=foodOriginal
+            if(dietsReciveds.length){
                 let found=[];  
-                let foodDiet=foodOriginal?.filter((food)=>{ 
+                foodDiet=foodOriginal?.filter((food)=>{ 
                 return food.diets.some((f,i)=>{
                     let options=dietsReciveds.find((options)=>options===f)
                     if(options) {
@@ -70,10 +90,8 @@ const reducer = (state = initialState, action) => {
                     return false;
                 })
             })
+            } 
             return {...state,food:foodDiet}
-            } else {
-                return {...state}
-            }
         default:
             return state;
     };

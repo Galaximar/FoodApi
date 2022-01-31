@@ -2,10 +2,13 @@ export const GET_ALL_FOOD = 'GET_ALL_FOOD';
 export const START='START';
 export const END='END';
 export const ORDERaz='ORDERaz';
-export const DIET_TYPES='DIET_TYPES'
-export const DIET_FILTER='DIET_FILTER'
-export const SEARCHING='SEARCHING'
-export const FILTER_TYPES='FILTER_TYPES'
+export const DIET_TYPES='DIET_TYPES';
+export const DIET_FILTER='DIET_FILTER';
+export const SEARCHING='SEARCHING';
+export const FILTER_TYPES='FILTER_TYPES';
+export const DATA_FOOD_CREATED='DATA_FOOD_CREATED'
+export const ORDER_BY_POINTS='ORDER_BY_POINTS'
+export const FOOD_INFO='FOOD_INFO'
 
 export const getAllFood = (name) => dispatch => {
         if(name){
@@ -22,6 +25,13 @@ export const getAllFood = (name) => dispatch => {
             dispatch({ type: GET_ALL_FOOD, payload: json });
         });
         }
+};
+export const foodInfo = (id) => dispatch => {
+        return fetch(`http://localhost:3001/api/recipes/${id}`)
+        .then(response => response.json())
+        .then(json => {
+        dispatch({ type: FOOD_INFO, payload: json });
+    });
 };
 export const startPagination = (start) => dispatch => {
     return dispatch({ type: START, payload: start })
@@ -51,11 +61,21 @@ export const changeFilterTypes = (value) => dispatch => {
 export const createRecipe = ({name,image,summary,points,healthScore,instructions}) => dispatch => {
     let options={
         method: "POST",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+            },
         body: JSON.stringify({name,image,summary,points,healthScore,instructions})
     }
         return fetch(`http://localhost:3001/api/recipes/create`,options)
         .then(response => response.json())
         .then(json => {
-        dispatch({ type: DIET_TYPES, payload: json });
+        dispatch({type: DATA_FOOD_CREATED, payload: json})
     });
+};
+export const enlaceFoodWithDiet = (foodId,dietId) => dispatch => {
+    let options={
+        method: "POST"
+    }
+        return fetch(`http://localhost:3001/api/recipes/${foodId}/diet/${dietId}`,options)
 };

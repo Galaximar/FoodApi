@@ -5,7 +5,8 @@ import { useEffect } from 'react';
 import {useDispatch} from 'react-redux';
 import { dietTypes } from './redux/actions/actions';
 import { Container } from './components/Container';
-
+import { CreateRecipe } from './components/CreateRecipe';
+import { CardInfo } from './components/CardInfo';
 function App() {
   const dispatch=useDispatch();
   useEffect(()=>{
@@ -13,10 +14,11 @@ function App() {
   },[dispatch])
   return (
     <div className="App">
-      <h1>Henry Food</h1>
       <Routes>
         <Route path="/" element={<Ladding />} />
         <Route path="/food" element={<Container />} />
+        <Route path="/create" element={<CreateRecipe />} />
+        <Route path="/food/info/:id" element={<CardInfo />}/>
       </Routes>
     </div>
   );
