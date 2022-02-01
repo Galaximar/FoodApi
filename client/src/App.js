@@ -7,6 +7,7 @@ import { dietTypes } from './redux/actions/actions';
 import { Container } from './components/Container';
 import { CreateRecipe } from './components/CreateRecipe';
 import { CardInfo } from './components/CardInfo';
+import { NavBar } from './components/NavBar';
 function App() {
   const dispatch=useDispatch();
   useEffect(()=>{
@@ -14,6 +15,7 @@ function App() {
   },[dispatch])
   return (
     <div className="App">
+      <NavBar />
       <Routes>
         <Route path="/" element={<Ladding />} />
         <Route path="/food" element={<Container />} />

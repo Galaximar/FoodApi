@@ -21,8 +21,9 @@ export const Search = ()=>{
         setInputValue(e.target.value);
     }
     return (
-        <div>
+        <div className="searchBar">
             <form onSubmit={handleSubmit}>
+                <label>Search a Food </label>
                 <input
                 type="text"
                 placeholder="Write a food. . ."

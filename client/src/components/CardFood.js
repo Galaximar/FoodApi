@@ -18,9 +18,12 @@ export const CardFood=()=>{
                 return (
                 <div key={f.id} className="image">
                     <Link to={`info/${f.id}`}>
-                        <p>{f.diets.join(" ")} {f.name}</p>
-                    </Link>           
-                    <img src={f.image} alt={f.name}/>
+                        <p className="titleInfoCard">
+                            {f.name}<br/>
+                            Diet Types: {f.diets.map(d=>d[0].toUpperCase()+d.slice(1)).join(", ")}
+                        </p>
+                        <img src={f.image} alt={f.name}/>
+                    </Link>    
                 </div>
                 )
             })}

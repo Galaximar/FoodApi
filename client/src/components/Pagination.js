@@ -20,7 +20,7 @@ export const Pagination = ()=>{
 
     const handleNext= (e)=>{
         if(foods.length>end)
-        history(`?start=${start+limit}&end=${end+limit}`) //history de renderiza todo de vuelta.
+        history(`?start=${start+limit}&end=${end+limit}`) 
     }
     const handlePrev= (e)=>{
         if(start>0){
@@ -29,8 +29,8 @@ export const Pagination = ()=>{
     }
     return (
         <div className="next-prev">
-            <span onClick={handlePrev}>Previous</span>
-            <span onClick={handleNext}>Next</span>
+            <span className="spanButton" onClick={handlePrev}>Previous</span>
+            <span className="spanButton" onClick={handleNext}>Next</span>
         </div>
     )
 }

@@ -15,9 +15,6 @@ export const CreateRecipe=()=>{
     let [instructionsObject,setInstructionsObject]=useState([])
     let [errors, setErrors] = useState({...initialStates,existError:true});
     const dispatch=useDispatch();
-    useEffect(()=>{
-        console.log(instructionsObject)
-    },[instructionsObject])
     const stepAgree=(e)=>{
         e.preventDefault()
         setInstructionsObject([...instructionsObject,{number:numberStep,step:food.instructions}])
@@ -51,7 +48,6 @@ export const CreateRecipe=()=>{
         dispatch(createRecipe({...food,instructions:[{steps:instructionsObject}]}))
     }
 
-
     useEffect(()=>{
         food.dietTypes.map((d)=>dispatch(enlaceFoodWithDiet(foodId,d)))
     },[dispatch,foodId])
@@ -62,9 +58,11 @@ export const CreateRecipe=()=>{
                     <div className="formCreate1">
                         {data.map((x,i)=>{
                             return (
-                                <div key={i} className="inputCreate1">
-                                    <label>{x}</label>
-                                    <input className={errors[x]&&"danger"} type="text" name={x} value={food[x]} onChange={handleInputChange}/>
+                                <div key={i} className="conteinerInputCreate1">
+                                    <div className="inputCreate">
+                                        <label>{x[0].toUpperCase()+x.slice(1)}</label>
+                                        <input className={errors[x]&&"danger"} type="text" name={x} value={food[x]} onChange={handleInputChange}/>
+                                    </div>
                                     <div className="error">
                                         {errors[x] && (
                                             <span className="danger">{errors[x]}</span>
@@ -73,35 +71,35 @@ export const CreateRecipe=()=>{
                                 </div>
                             )
                         })}
+                        <div className="imageLoad">
+                            {food.image?<img className="img" alt="imgNotLoad" src={food.image}/>:null}
+                        </div>
                     </div>
+                    <p className="dietTypesTitle">Select a Diet Types</p>
                     <div className="dietTypes">
-                    <p>Select Diet</p>
                         {dietData.map(({dietType:d,id:i})=>{
                             return (<label key={i}>
-                                {d}
+                                {d[0].toUpperCase()+d.slice(1)}
                                 <input type="checkbox" name={d} value={i} onChange={(e)=>handleInputChange(e,"checkbox")}/>
                                 </label>)
                         })}
                     </div>
                     {!errors.existError? <input type="submit"/>:null}
-                    <div>
-                        {food.image?<img src={food.image}/>:null}
-                    </div>
                 </form>
             </div>
 
-            <div>
+            <div className="stepInput">
                 <form autoComplete="off" onSubmit={stepAgree}>
-                    <label>Steps</label>
-                    <input type="text" value={food.instructions} name="instructions" onChange={handleInputChange}/>
-                    <input name="instructions" type="submit"/>
+                    <label className="titleFont">Steps  </label>
+                    <input className="mediumFont" type="text" value={food.instructions} name="instructions" onChange={handleInputChange}/>
+                    <input className="mediumFont" name="instructions" type="submit" value="Agree"/>
                 </form>
             </div>
 
             <div>
-                {instructionsObject?.map(i=><p key={i.number}>{i.number} {i.step}</p>)}
+                {instructionsObject?.map(i=><p className="stepsAgree" key={i.number}><span className="numberStep">{i.number}</span> {i.step[0].toUpperCase()+i.step.slice(1)}</p>)}
             </div>
-            
+            <br/>
         </div>
     )
 }

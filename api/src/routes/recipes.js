@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const { Recipe,Diet } = require('../db.js');
+const { Recipes,Diets } = require('../db.js');
 const { Op } = require('sequelize');
 const axios = require('axios');
 const {apiKey} = process.env;
@@ -33,8 +33,8 @@ router.get("/",(req,res)=>{
         })
         let promiseDb;
     if(name){
-        promiseDb=Recipe.findAll({
-            include: Diet,
+        promiseDb=Recipes.findAll({
+            include: Diets,
             where: {
                 name: {
                     [Op.iLike]: `%${name}%`,
@@ -42,40 +42,70 @@ router.get("/",(req,res)=>{
             }
         })
     } else {
-        promiseDb=Recipe.findAll({
-            include: Diet
+        promiseDb=Recipes.findAll({
+            include: Diets
         });
     }
     Promise.all([promiseApi,promiseDb]).then(([dataApi,dataDb])=>{
-        foods.push(...dataApi,...dataDb);
+        dataDb= JSON.parse(JSON.stringify(dataDb,null,2))
+        dataDb=dataDb.map(x=>{
+            return {...x,diets:x.diets.map(d=>d.dietType)}
+        })
+        foods.push(...dataDb,...dataApi);
         return res.send(foods);
     });
 })
 router.get("/:idFood",async (req,res)=>{
     const {idFood}=req.params;
-    let food;
-    if(idFood*1) {
-        food= await Recipe.findOne({
-            include: Diet,
+    let data;
+
+    if(isNaN(idFood)) {
+        data= await Recipes.findOne({
+            include: Diets,
             where: {
                 id: idFood
             }
         })
+        data= JSON.parse(JSON.stringify(data,null,2))
+        data={...data,diets:data.diets.map(d=>d.dietType)}
     } else {
-        food= await axios.get(`https://api.spoonacular.com/recipes/${idFood}/information?apiKey=${apiKey}`) //ver si se puede, si no traer todos los datos y usar .find
+        data=await axios.get(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${apiKey}&addRecipeInformation=true&number=40`)
+        data=data.data.results.find(r=>r.id===idFood*1)
+        data= {
+            name:data.title,
+            image:data.image,
+            summary:data.summary,
+            id:data.id,
+            points:data.spoonacularScore,
+            healthScore:data.healthScore,
+            instructions:data.analyzedInstructions,
+            diets:data.diets
+            } 
     }
-    res.send(food);
+    res.send(data);
 })
 router.post("/:foodId/diet/:dietId",async (req,res)=>{
-    const {foodId,dietId} = req.params;
-    const food = await Recipe.findByPk(foodId);
-    await food.addDiet(dietId);
-    res.sendStatus(200)
+    try {
+        const {foodId,dietId} = req.params;
+        const food = await Recipes.findByPk(foodId);
+        await food.addDiet(dietId);
+        res.sendStatus(200)
+    } catch (error) {
+        console.log(error)
+        res.sendStatus(402)
+    }
 })
 router.post("/create", async (req,res)=>{
-    const {name,image,summary,points,healthScore,instructions}=req.body;
-    const newRecipe= await Recipe.create({name,image,summary,points,healthScore,instructions});
-    res.send(newRecipe)
+    try {
+        let {name,image,summary,points,healthScore,instructions}=req.body;
+        
+        const newRecipe= await Recipes.create({name,image,summary,points,healthScore,instructions});
+        //console.log(JSON.parse(newRecipe.dataValues.instructions))
+        res.send(newRecipe)
+    } catch (error) {
+        console.log(error)
+        res.sendStatus(402)
+    }
 })
 router.post("/diet", async (req,res)=>{
     const types={
@@ -91,9 +121,10 @@ router.post("/diet", async (req,res)=>{
         lowFODMAP: "fodmap friendly",
         whole30: "whole 30"
     }
+    let dietsData=[];
     for (const diet in types) {
-        await Diet.create({dietTypes:diet});
+        dietsData.push(await Diets.create({dietType:types[diet]}));
     }
-    res.send(types);
+    res.send(dietsData);
 })
 module.exports = router;

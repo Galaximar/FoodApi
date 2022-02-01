@@ -15,11 +15,13 @@ export const CardInfo=()=>{
     return (
         <div className="conteinerInfo">
             <div>
-                <p>{name}</p>
-                <img src={image}/>
+                <h2 className="subtitle">{name}  </h2>
+                <img className="imgInfo" src={image}/>
+                <h2 className="subtitle">Summary</h2>
                 <p className="summary" dangerouslySetInnerHTML={{__html: summary}}></p>
             </div>
             <div>
+            <h2 className="subtitle">Steps</h2>
             {instructions?instructions[0].steps?.map((s,i)=>{
                     return <div className="steps" key={i}><div>{s.number}</div> {s.step}</div>
                 }):null}
