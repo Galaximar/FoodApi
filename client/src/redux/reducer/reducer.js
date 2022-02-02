@@ -10,7 +10,8 @@ const initialState = {
     end:0,
     foodCreatedId:undefined,
     filterTypes:{
-        orderAlphabetic: "",
+        orderAlphabetic: "none",
+        orderByPoints:"none",
         byDiet: [],
     }
 };
@@ -28,14 +29,24 @@ const reducer = (state = initialState, action) => {
         case END:
             return {...state,end:action.payload}
         case FILTER_TYPES:
+            let ant={...state.filterTypes}
             if(Array.isArray(action.payload)) return {...state,...state.filterTypes.byDiet=action.payload}
-            else return {...state,...state.filterTypes.orderAlphabetic=action.payload}
+            else if(action.payload.orderAlphabetic==="asc"||action.payload.orderAlphabetic==="dsc") {
+                ant.orderByPoints="none";
+                ant.orderAlphabetic=action.payload.orderAlphabetic;
+                return {...state,filterTypes:ant}
+            }
+            else {
+                ant.orderAlphabetic="none";
+                ant.orderByPoints=action.payload.orderPoints;
+                return {...state,filterTypes:ant};
+            }
         case ORDERaz:
-            let {option}=action.payload; 
+            let {orderAlphabetic}=action.payload; 
             let foodOrder =[...state.food]
-            if(option!==""){
+            if(orderAlphabetic!=="none"){
                 foodOrder=foodOrder.sort((a,b)=>{
-                    if(option==="asc"){
+                    if(orderAlphabetic==="asc"){
                         if(a.name>b.name) return 1 //a es el de la derecha
                         if(a.name<b.name) return -1
                         return 0;
@@ -45,14 +56,16 @@ const reducer = (state = initialState, action) => {
                         return 0;
                     }
                 })
+                let ant={...state.filterTypes}
+                return {...state,food:foodOrder,filterTypes:{...ant,orderByPoints:""}}
             }
             return {...state,food:foodOrder}
         case ORDER_BY_POINTS:
-            let {options}=action.payload; 
+            let {orderPoints}=action.payload; 
             let foodToOrder =[...state.food]
-            if(options!==""){
+            if(orderPoints!=="none"){
                 foodToOrder=foodToOrder.sort((a,b)=>{
-                    if(option==="asc"){
+                    if(orderPoints==="ascPoints"){
                         if((a.spoonacularScore||a.points)>(b.spoonacularScore||b.points)) return 1 
                         if((a.spoonacularScore||a.points)<(b.spoonacularScore||b.points)) return -1
                         return 0;
@@ -62,6 +75,8 @@ const reducer = (state = initialState, action) => {
                         return 0;
                     }
                 })
+                let ant={...state.filterTypes};
+                return {...state,food:foodToOrder,filterTypes:{...ant,orderAlphabetic:""}}
             }
             return {...state,food:foodToOrder}
         case DIET_TYPES:

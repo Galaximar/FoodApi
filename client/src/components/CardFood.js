@@ -20,7 +20,7 @@ export const CardFood=()=>{
                     <Link to={`info/${f.id}`}>
                         <p className="titleInfoCard">
                             {f.name}<br/>
-                            Diet Types: {f.diets.map(d=>d[0].toUpperCase()+d.slice(1)).join(", ")}
+                            {f.points} Diet Types: {f.diets.map(d=>d[0].toUpperCase()+d.slice(1)).join(", ")}
                         </p>
                         <img src={f.image} alt={f.name}/>
                     </Link>    

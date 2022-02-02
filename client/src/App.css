@@ -162,6 +162,11 @@ input.danger {
   border-radius: 50%;
   font-size: 25px;
 }
+.points {
+  display: grid;
+  justify-items: center;
+  grid-template-columns: repeat(2,1fr);
+}
 
 .conteinerCreate {
   background-color: rgb(243, 235, 215);

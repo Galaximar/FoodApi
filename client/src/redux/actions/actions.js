@@ -2,12 +2,12 @@ export const GET_ALL_FOOD = 'GET_ALL_FOOD';
 export const START='START';
 export const END='END';
 export const ORDERaz='ORDERaz';
+export const ORDER_BY_POINTS='ORDER_BY_POINTS'
 export const DIET_TYPES='DIET_TYPES';
 export const DIET_FILTER='DIET_FILTER';
 export const SEARCHING='SEARCHING';
 export const FILTER_TYPES='FILTER_TYPES';
 export const DATA_FOOD_CREATED='DATA_FOOD_CREATED'
-export const ORDER_BY_POINTS='ORDER_BY_POINTS'
 export const FOOD_INFO='FOOD_INFO'
 
 export const getAllFood = (name) => dispatch => {
@@ -41,6 +41,9 @@ export const endPagination = (end) => dispatch => {
 };
 export const ascOrDsc = (value) => dispatch => {
     return dispatch({ type: ORDERaz, payload: value })
+};
+export const ascOrDscByPoints = (value) => dispatch => {
+    return dispatch({ type: ORDER_BY_POINTS, payload: value })
 };
 export const dietTypes = () => dispatch => {
     let options={

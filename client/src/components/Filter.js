@@ -1,18 +1,22 @@
 import React, { useEffect, useState } from "react";
 import {useDispatch, useSelector} from 'react-redux'
-import {ascOrDsc, changeFilterTypes, dietFilter } from "../redux/actions/actions";
+import {ascOrDsc, ascOrDscByPoints, changeFilterTypes, dietFilter } from "../redux/actions/actions";
 import { getAllFood } from "../redux/actions/actions";
 
 export const Filter = ()=>{
     const dietData=useSelector(state=>state.dietTypes);
-    const [valueOrder,setValueOrder]=useState({option:""});
+    const [valueOrderByAbc,setValueOrderByAbc]=useState({orderAlphabetic:"none"});
+    const [valueOrderByPoints,setValueOrderByPoints]=useState({orderPoints:"none"});
     const [valueDiet,setValueDiet]=useState([]);
     let reset=false;
 
     const dispatch=useDispatch();
 
-    const handleChangeOrder= (e)=>{
-        setValueOrder({option:e.target.value})
+    const handleChangeOrderByAbc= (e)=>{
+        setValueOrderByAbc({orderAlphabetic:e.target.value});
+    }
+    const handleChangeOrderByPoints= (e)=>{
+        setValueOrderByPoints({orderPoints:e.target.value});
     }
 
     const handleChangeDiet= (e)=>{
@@ -38,17 +42,29 @@ export const Filter = ()=>{
     },[valueDiet,dispatch])
 
     useEffect(()=>{
-        dispatch(ascOrDsc(valueOrder));
-        dispatch(changeFilterTypes(valueOrder));
-    },[valueOrder,dispatch])
+        dispatch(ascOrDsc(valueOrderByAbc));
+        dispatch(changeFilterTypes(valueOrderByAbc));
+    },[valueOrderByAbc,dispatch])
+
+    useEffect(()=>{
+        dispatch(ascOrDscByPoints(valueOrderByPoints));
+        dispatch(changeFilterTypes(valueOrderByPoints));
+    },[valueOrderByPoints,dispatch])
 
     return (
         <div>
             <form >
-                <select name="select" onChange={handleChangeOrder}>
+                <select name="orderAlphabetic" onChange={handleChangeOrderByAbc}>
                     <option value="none">Order (a-z)</option>
                     <option value="asc">Ascendent</option>
                     <option value="dsc">Descendent</option>
+                </select>
+            </form>
+            <form >
+                <select name="orderPoints" onChange={handleChangeOrderByPoints}>
+                    <option value="none">Order By Points</option>
+                    <option value="ascPoints">Ascendent</option>
+                    <option value="dscPoints">Descendent</option>
                 </select>
             </form>
 
