@@ -11,23 +11,27 @@ export const CreateRecipe=()=>{
     const dietData=useSelector(state=>state.dietTypes);
     const foodId=useSelector(state=>state.foodCreatedId)
     let [food,setFood]=useState({...initialStates});
-    let [numberStep,setNumberStep]=useState(1)
+    let [numberStep,setNumberStep]=useState(1);
     let [instructionsObject,setInstructionsObject]=useState([])
     let [errors, setErrors] = useState({...initialStates,existError:true});
     const dispatch=useDispatch();
     const stepAgree=(e)=>{
         e.preventDefault()
-        setInstructionsObject([...instructionsObject,{number:numberStep,step:food.instructions}])
-        setNumberStep(++numberStep);
+        if(food.instructions){
+            setInstructionsObject([...instructionsObject,{number:numberStep,step:food.instructions}])
+            setNumberStep(++numberStep);
+        }
     }
-
+    useEffect(()=>{
+        setErrors(validate({...food,instructionsObject}));
+    },[instructionsObject])
 
     const handleInputChange = function(e,option){
+    let arr=[...food.dietTypes];
     if(option!=="checkbox") {
         setFood({...food,[e.target.name]:e.target.value})
     }
     else {
-        let arr;
         if(e.target.checked){
             arr=[...food.dietTypes];
             arr.push(e.target.value)
@@ -38,7 +42,7 @@ export const CreateRecipe=()=>{
     }
     setErrors(validate({
         ...food,
-        [e.target.name]: e.target.value
+        [e.target.name]: e.target.value,instructionsObject,dietTypes:arr
     }));
     }
 
@@ -60,13 +64,12 @@ export const CreateRecipe=()=>{
                             return (
                                 <div key={i} className="conteinerInputCreate1">
                                     <div className="inputCreate">
-                                        <label>{x[0].toUpperCase()+x.slice(1)}</label>
-                                        <input className={errors[x]&&"danger"} type="text" name={x} value={food[x]} onChange={handleInputChange}/>
+                                        <label>{x[0].toUpperCase()+x.slice(1)}</label> 
+                                        <input className={typeof(errors[x])==='object'?(errors[x].length)&&"danger":errors[x]&&"danger"} type="text" name={x} value={food[x]} onChange={handleInputChange}/>
                                     </div>
                                     <div className="error">
-                                        {errors[x] && (
-                                            <span className="danger">{errors[x]}</span>
-                                        )}
+                                        {typeof(errors[x])==='object'?<span className="danger">{errors[x].join(" ")}</span>
+                                        :<span className="danger">{errors[x]}</span>}
                                     </div>
                                 </div>
                             )
@@ -77,7 +80,8 @@ export const CreateRecipe=()=>{
                     </div>
                     <p className="dietTypesTitle">Select a Diet Types</p>
                     <div className="dietTypes">
-                        {dietData.map(({dietType:d,id:i})=>{
+                    {errors.dietTypes?<span className="danger">{errors.dietTypes}</span>:null}
+                    {dietData.map(({dietType:d,id:i})=>{
                             return (<label key={i}>
                                 {d[0].toUpperCase()+d.slice(1)}
                                 <input type="checkbox" name={d} value={i} onChange={(e)=>handleInputChange(e,"checkbox")}/>
@@ -91,13 +95,13 @@ export const CreateRecipe=()=>{
             <div className="stepInput">
                 <form autoComplete="off" onSubmit={stepAgree}>
                     <label className="titleFont">Steps  </label>
-                    <input className="mediumFont" type="text" value={food.instructions} name="instructions" onChange={handleInputChange}/>
+                    {errors.instructions&&<span className="danger">{errors.instructions}</span>}<input className="mediumFont" type="text" value={food.instructions} name="instructions" onChange={handleInputChange}/>
                     <input className="mediumFont" name="instructions" type="submit" value="Agree"/>
                 </form>
             </div>
 
             <div>
-                {instructionsObject?.map(i=><p className="stepsAgree" key={i.number}><span className="numberStep">{i.number}</span> {i.step[0].toUpperCase()+i.step.slice(1)}</p>)}
+                {instructionsObject?.map(i=><p className="stepsAgree" key={i.number}><span className="numberStep">{i.number}</span> {i.step[0]?.toUpperCase()+i.step?.slice(1)}</p>)}
             </div>
             <br/>
         </div>

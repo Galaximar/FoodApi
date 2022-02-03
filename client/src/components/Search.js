@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {useDispatch, useSelector} from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { ascOrDsc, ascOrDscByPoints, dietFilter, getAllFood } from "../redux/actions/actions";
@@ -10,6 +10,9 @@ export const Search = ()=>{
     const orderAlphabetic=useSelector(state=>state.filterTypes.orderAlphabetic);
     const orderPoints=useSelector(state=>state.filterTypes.orderByPoints);
     const [inputValue, setInputValue] = useState("")
+    useEffect(()=>{
+        return ()=>setInputValue("")
+    },[])
     const handleSubmit = async (e)=>{
         e.preventDefault();
         history(`?start=${0}&end=${9}`);

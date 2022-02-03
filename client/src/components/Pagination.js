@@ -29,7 +29,7 @@ export const Pagination = ()=>{
     }
     return (
         <div className="next-prev">
-            <span className="spanButton" onClick={handlePrev}>Previous</span>
+            <span id="previous" className="spanButton" onClick={handlePrev}>Previous</span>
             <span className="spanButton" onClick={handleNext}>Next</span>
         </div>
     )

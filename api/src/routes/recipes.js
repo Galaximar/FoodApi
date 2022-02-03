@@ -14,8 +14,10 @@ const router = Router();
 
 router.get("/",(req,res)=>{
     let foods=[];
-    const {name} = req.query;
-    let promiseApi=axios.get(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${apiKey}&addRecipeInformation=true&number=40`)
+    const {name,searchDb,searchApi} = req.query;
+    let promiseApi=[];
+    if(!searchDb){
+        promiseApi=axios.get(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${apiKey}&addRecipeInformation=true&number=1`)
         .then(({data})=>{
             let info=data.results.map(f=>{
                 return {
@@ -31,20 +33,23 @@ router.get("/",(req,res)=>{
             })
             return name?info.filter(f=>f.name.includes(name)):info;
         })
-        let promiseDb;
-    if(name){
-        promiseDb=Recipes.findAll({
-            include: Diets,
-            where: {
-                name: {
-                    [Op.iLike]: `%${name}%`,
-                },
-            }
-        })
-    } else {
-        promiseDb=Recipes.findAll({
-            include: Diets
-        });
+    }
+        let promiseDb=[];
+    if(!searchApi){
+        if(name){
+            promiseDb=Recipes.findAll({
+                include: Diets,
+                where: {
+                    name: {
+                        [Op.iLike]: `%${name}%`,
+                    },
+                }
+            })
+        } else {
+            promiseDb=Recipes.findAll({
+                include: Diets
+            });
+        }
     }
     Promise.all([promiseApi,promiseDb]).then(([dataApi,dataDb])=>{
         dataDb= JSON.parse(JSON.stringify(dataDb,null,2))
@@ -52,7 +57,8 @@ router.get("/",(req,res)=>{
             return {...x,diets:x.diets.map(d=>d.dietType)}
         })
         foods.push(...dataDb,...dataApi);
-        return res.send(foods);
+        if(foods.length) return res.send(foods)
+        return res.send(["Not found"])
     });
 })
 router.get("/:idFood",async (req,res)=>{
@@ -67,7 +73,7 @@ router.get("/:idFood",async (req,res)=>{
             }
         })
         data= JSON.parse(JSON.stringify(data,null,2))
-        data={...data,diets:data.diets.map(d=>d.dietType)}
+        if(data.diets) data={...data,diets:data.diets.map(d=>d.dietType)}
     } else {
         data=await axios.get(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${apiKey}&addRecipeInformation=true&number=40`)
         data=data.data.results.find(r=>r.id===idFood*1)
@@ -103,7 +109,6 @@ router.post("/create", async (req,res)=>{
         //console.log(JSON.parse(newRecipe.dataValues.instructions))
         res.send(newRecipe)
     } catch (error) {
-        console.log(error)
         res.sendStatus(402)
     }
 })

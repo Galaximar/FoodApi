@@ -2,16 +2,7 @@ import React, { useEffect } from "react";
 import {useDispatch, useSelector} from 'react-redux'
 import { foodInfo } from "../redux/actions/actions";
 import { useParams } from 'react-router-dom';
-
-const removeUltimateLines= (str="Cargando")=>{
-    let finalPoint=str.length-1;
-    for (let i=0;i<str.length;i++){
-        if(str[i]===".") {
-            finalPoint=i
-        }
-        if(str[i]+str[i+1]==="<a") return str.slice(0,finalPoint+1)
-    }
-}
+import { removeUltimateLines } from "../functions/removeUltimateLines";
 
 export const CardInfo=()=>{
     const dispatch=useDispatch();

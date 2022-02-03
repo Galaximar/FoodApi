@@ -1,8 +1,10 @@
-import { render, screen } from '@testing-library/react';
-import App from './App';
+import React from 'react';
+import '@testing-library/jest-dom'
+import { removeUltimateLines } from "./functions/removeUltimateLines";
+let str="texto a cortar.<a> </a>"
 
-test('renders learn react link', () => {
-  render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
+test('Se renderiza el componente', () => {
+  expect(removeUltimateLines(str)).toBe("texto a cortar.")
 });
+
+

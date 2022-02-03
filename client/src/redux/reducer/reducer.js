@@ -1,4 +1,4 @@
-import { DATA_FOOD_CREATED, DIET_FILTER, DIET_TYPES, FILTER_TYPES, FOOD_INFO, GET_ALL_FOOD, ORDERaz, ORDER_BY_POINTS } from "../actions/actions";
+import { DATA_FOOD_CREATED, DIET_FILTER, DIET_TYPES, FILTER_TYPES, FOOD_INFO, GET_ALL_FOOD, LOADING, ORDERaz, ORDER_BY_POINTS } from "../actions/actions";
 import { START } from "../actions/actions";
 import { END } from "../actions/actions";
 
@@ -21,6 +21,9 @@ const reducer = (state = initialState, action) => {
     switch(action.type) {
         case GET_ALL_FOOD:
             foodOriginal=action.payload;
+            return {...state,food:action.payload}
+        case LOADING:
+            foodOriginal=action.payload
             return {...state,food:action.payload}
         case FOOD_INFO:
             return {...state,foodDetail:action.payload}

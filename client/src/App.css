@@ -259,6 +259,21 @@ input.danger {
 .mediumFont {
   font-size: 18px;
 }
+.largeFont {
+  font-size: 25px;
+}
 .titleFont {
   font-size: 25px;
+}
+.plusCard {
+  grid-column: 1/4;
+  margin: 200px;
+  justify-items: center;
+  background-color: rgb(243, 235, 215);
+  text-align: center;
+}
+.plusCard img {
+  display: block;
+  margin: auto;
+  width: 90%;
 }

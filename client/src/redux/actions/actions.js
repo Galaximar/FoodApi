@@ -7,10 +7,24 @@ export const DIET_TYPES='DIET_TYPES';
 export const DIET_FILTER='DIET_FILTER';
 export const SEARCHING='SEARCHING';
 export const FILTER_TYPES='FILTER_TYPES';
-export const DATA_FOOD_CREATED='DATA_FOOD_CREATED'
-export const FOOD_INFO='FOOD_INFO'
+export const DATA_FOOD_CREATED='DATA_FOOD_CREATED';
+export const FOOD_INFO='FOOD_INFO';
+export const LOADING='LOADING';
 
-export const getAllFood = (name) => dispatch => {
+export const getAllFood = (name,searchOption) => dispatch => {
+    if(searchOption==="searchDb"){
+        return fetch(`http://localhost:3001/api/recipes/?searchDb=true`)
+            .then(response => response.json())
+            .then(json => {
+            dispatch({ type: GET_ALL_FOOD, payload: json });
+        });
+    } else if(searchOption==="searchApi"){
+        return fetch(`http://localhost:3001/api/recipes/?searchApi=true`)
+            .then(response => response.json())
+            .then(json => {
+            dispatch({ type: GET_ALL_FOOD, payload: json });
+        });
+    }else {
         if(name){
             return fetch(`http://localhost:3001/api/recipes/?name=${name}`)
             .then(response => response.json())
@@ -25,6 +39,10 @@ export const getAllFood = (name) => dispatch => {
             dispatch({ type: GET_ALL_FOOD, payload: json });
         });
         }
+    }
+};
+export const loading = (value) => dispatch => {
+    return dispatch({ type: LOADING, payload: value })
 };
 export const foodInfo = (id) => dispatch => {
         return fetch(`http://localhost:3001/api/recipes/${id}`)
