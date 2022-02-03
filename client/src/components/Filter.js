@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {useDispatch, useSelector} from 'react-redux'
+import { SearchDataBase } from "./SearchDataBase"
 import {ascOrDsc, ascOrDscByPoints, changeFilterTypes, dietFilter } from "../redux/actions/actions";
 
 export const Filter = ()=>{
@@ -22,11 +23,6 @@ export const Filter = ()=>{
         else setValueDiet(valueDiet.filter(d=>d!==e.target.value))
     }
 
-    const handleSubmitDiet= (e)=>{
-        e.preventDefault()
-        dispatch(dietFilter(valueDiet));
-    }
-
     useEffect(()=>{
         dispatch(dietFilter(valueDiet));
         dispatch(changeFilterTypes(valueDiet));
@@ -43,7 +39,7 @@ export const Filter = ()=>{
     },[valueOrderByPoints,dispatch])
 
     return (
-        <div>
+        <div className="filter">
             <form >
                 <select name="orderAlphabetic" onChange={handleChangeOrderByAbc}>
                     <option value="none">Order (a-z)</option>
@@ -59,13 +55,14 @@ export const Filter = ()=>{
                 </select>
             </form>
 
-            <form onSubmit={handleSubmitDiet}> 
+            <form> 
+                <label>Diet Filter</label><br/>
                 {dietData?.map(({dietType:d},i)=>{
                     return <label key={i} htmlFor={`cbox${i}`}><input type="checkbox"  value={d} id={`cbox${i}`} onChange={handleChangeDiet}/>{d[0].toUpperCase()+d.slice(1)}</label>
                 })}
             </form>
             
-
+            <SearchDataBase />
 
         </div>
     )

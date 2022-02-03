@@ -18,7 +18,7 @@ router.get("/",(req,res)=>{
         const {name,searchDb,searchApi} = req.query;
         let promiseApi=[];
         if(!searchDb){
-            promiseApi=axios.get(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${apiKey}&addRecipeInformation=true&number=20`)
+            promiseApi=axios.get(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${apiKey}&addRecipeInformation=true&number=100`)
             .then(({data})=>{
                 let info=data.results.map(f=>{
                     return {
@@ -80,7 +80,7 @@ router.get("/:idFood",async (req,res)=>{
             data= JSON.parse(JSON.stringify(data,null,2))
             if(data.diets) data={...data,diets:data.diets.map(d=>d.dietType)}
         } else {
-            data=await axios.get(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${apiKey}&addRecipeInformation=true&number=40`)
+            data=await axios.get(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${apiKey}&addRecipeInformation=true&number=100`)
             data=data.data.results.find(r=>r.id===idFood*1)
             data= {
                 name:data.title,

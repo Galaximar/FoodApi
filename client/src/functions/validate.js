@@ -4,7 +4,10 @@ export function validate(input) {
     if (!input.name) {
         errors.name = 'Name is required';
         totalErrors++;
-    } else totalErrors--;
+    } else if(!(input.name.replace(/[0-9]/g,"").length===input.name.length)){
+        errors.name="Name invalid"
+        totalErrors++;
+    }else totalErrors--;
     if (!input.image) {
         errors.image = 'Image is required';
         totalErrors++;
@@ -18,10 +21,10 @@ export function validate(input) {
         errors.points = [...errors.points,'Points is required'];
         totalErrors++;
     } else totalErrors--;
-    if(parseFloat(input.points)<0||parseFloat(input.points)>100){
+    if((parseFloat(input.points)<0||parseFloat(input.points)>100)&&input.points*1){
         errors.points=[...errors.points,"Num not valid"];
         totalErrors++;
-    }   else if(!parseFloat(input.points)){
+    }   else if(!parseFloat(input.points)||!(input.points*1)){
         errors.points=[...errors.points,"Num not valid"];
         totalErrors++
     }   else totalErrors--;
@@ -31,20 +34,20 @@ export function validate(input) {
         totalErrors++;
     } else totalErrors--;
 
-    if(parseFloat(input.healthScore)<0||parseFloat(input.healthScore)>100){
+    if((parseFloat(input.healthScore)<0||parseFloat(input.healthScore)>100)&&input.healthScore*1){
         errors.healthScore=[...errors.healthScore,"Num not valid"];
         totalErrors++;
-    }   else if(!parseFloat(input.healthScore)) {
+    }   else if(!parseFloat(input.healthScore)||!(input.healthScore*1)) {
         errors.healthScore=[...errors.healthScore,"Num not valid"];
         totalErrors++;
     }   else totalErrors--;
     if(input.dietTypes?.length===0){
-        errors.dietTypes = 'Diet Type is required,(al menos 1)';
+        errors.dietTypes = 'Diet Type is required (at least 1)';
         totalErrors++;
     } else totalErrors--;
 
     if(input.instructionsObject?.length===0){
-        errors.instructions = 'Instructions is required,(al menos 1)';
+        errors.instructions = 'Instructions is required (at least 1)';
         totalErrors++;
     } else totalErrors--;
     if(totalErrors===0) errors.existError=false;

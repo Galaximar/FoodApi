@@ -277,3 +277,17 @@ input.danger {
   margin: auto;
   width: 90%;
 }
+.filter {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto;
+  justify-items: center;
+  background-color: rgb(243, 235, 215);
+  margin: 15px;
+  border-radius: 10px;
+  text-align: center;
+}
+.buttonsPag{
+  background-color: rgb(243, 235, 215);
+  border:none;
+}

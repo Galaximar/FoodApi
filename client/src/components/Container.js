@@ -11,7 +11,6 @@ export const Container= ()=>{
             <CardFood />
             <Pagination />
             <Filter />
-            <SearchDataBase/>
         </div>
     )
 }

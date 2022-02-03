@@ -94,8 +94,8 @@ export const CreateRecipe=()=>{
 
             <div className="stepInput">
                 <form autoComplete="off" onSubmit={stepAgree}>
-                    <label className="titleFont">Steps  </label>
-                    {errors.instructions&&<span className="danger">{errors.instructions}</span>}<input className="mediumFont" type="text" value={food.instructions} name="instructions" onChange={handleInputChange}/>
+                    <label className="titleFont">Steps  </label><br/><br/>
+                    {errors.instructions&&<span className="danger">{errors.instructions}</span>}<br/><input className="mediumFont" type="text" value={food.instructions} name="instructions" onChange={handleInputChange}/>
                     <input className="mediumFont" name="instructions" type="submit" value="Agree"/>
                 </form>
             </div>

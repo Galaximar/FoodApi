@@ -39,8 +39,8 @@ export const Pagination = ()=>{
         <div className="next-prev">
             <span id="previous" className="spanButton" onClick={handlePrev}>Previous</span>
             {arrNumbers.map(n=>{
-                return <button key={n} value={n} onClick={handleClickButton}>{n}</button>
-            })}
+                    return <button className="buttonsPag" key={n} value={n} onClick={handleClickButton}>{n}</button>
+                })}
             <span className="spanButton" onClick={handleNext}>Next</span>
         </div>
     )
