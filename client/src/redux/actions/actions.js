@@ -17,27 +17,27 @@ export const getAllFood = (name,searchOption) => dispatch => {
             .then(response => response.json())
             .then(json => {
             dispatch({ type: GET_ALL_FOOD, payload: json });
-        });
+        }).catch(e=>console.log(e));
     } else if(searchOption==="searchApi"){
         return fetch(`http://localhost:3001/api/recipes/?searchApi=true`)
             .then(response => response.json())
             .then(json => {
             dispatch({ type: GET_ALL_FOOD, payload: json });
-        });
+        }).catch(e=>console.log(e));
     }else {
         if(name){
             return fetch(`http://localhost:3001/api/recipes/?name=${name}`)
             .then(response => response.json())
             .then(json => {
             dispatch({ type: GET_ALL_FOOD, payload: json });
-        });
+        }).catch(e=>console.log(e));
         }
         else {
             return fetch(`http://localhost:3001/api/recipes/`)
             .then(response => response.json())
             .then(json => {
             dispatch({ type: GET_ALL_FOOD, payload: json });
-        });
+        }).catch(e=>console.log(e));
         }
     }
 };
@@ -49,7 +49,7 @@ export const foodInfo = (id) => dispatch => {
         .then(response => response.json())
         .then(json => {
         dispatch({ type: FOOD_INFO, payload: json });
-    });
+    }).catch(e=>console.log(e));
 };
 export const startPagination = (start) => dispatch => {
     return dispatch({ type: START, payload: start })
@@ -71,7 +71,7 @@ export const dietTypes = () => dispatch => {
         .then(response => response.json())
         .then(json => {
         dispatch({ type: DIET_TYPES, payload: json });
-    });
+    }).catch(e=>console.log(e));
 };
 export const dietFilter = (value) => dispatch => {
     return dispatch({ type: DIET_FILTER, payload: value })
@@ -92,11 +92,11 @@ export const createRecipe = ({name,image,summary,points,healthScore,instructions
         .then(response => response.json())
         .then(json => {
         dispatch({type: DATA_FOOD_CREATED, payload: json})
-    });
+    }).catch(e=>console.log(e));
 };
 export const enlaceFoodWithDiet = (foodId,dietId) => dispatch => {
     let options={
         method: "POST"
     }
-        return fetch(`http://localhost:3001/api/recipes/${foodId}/diet/${dietId}`,options)
+    return fetch(`http://localhost:3001/api/recipes/${foodId}/diet/${dietId}`,options).catch(e=>console.log(e))
 };

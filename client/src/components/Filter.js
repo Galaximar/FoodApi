@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from "react";
 import {useDispatch, useSelector} from 'react-redux'
 import {ascOrDsc, ascOrDscByPoints, changeFilterTypes, dietFilter } from "../redux/actions/actions";
-import { getAllFood } from "../redux/actions/actions";
 
 export const Filter = ()=>{
     const dietData=useSelector(state=>state.dietTypes);
     const [valueOrderByAbc,setValueOrderByAbc]=useState({orderAlphabetic:"none"});
     const [valueOrderByPoints,setValueOrderByPoints]=useState({orderPoints:"none"});
     const [valueDiet,setValueDiet]=useState([]);
-    let reset=false;
 
     const dispatch=useDispatch();
 
@@ -26,14 +24,7 @@ export const Filter = ()=>{
 
     const handleSubmitDiet= (e)=>{
         e.preventDefault()
-        if(reset) {
-            for(let i=0;i<e.target.length;i++){
-                e.target[i].checked=false;
-            }
-            dispatch(getAllFood());
-            reset=false;
-        }
-        else dispatch(dietFilter(valueDiet));
+        dispatch(dietFilter(valueDiet));
     }
 
     useEffect(()=>{
@@ -72,8 +63,6 @@ export const Filter = ()=>{
                 {dietData?.map(({dietType:d},i)=>{
                     return <label key={i} htmlFor={`cbox${i}`}><input type="checkbox"  value={d} id={`cbox${i}`} onChange={handleChangeDiet}/>{d[0].toUpperCase()+d.slice(1)}</label>
                 })}
-                <input type="submit"/>
-                <button type="submit" onClick={()=>reset=true}>Restablecer</button>
             </form>
             
 

@@ -18,6 +18,14 @@ export const Pagination = ()=>{
         dispatch(endPagination(end));
     })
 
+    let numbersPaginations=Math.ceil(foods.length/9)
+    let arrNumbers=[]
+    for(let i=0;i<numbersPaginations;i++){
+        arrNumbers.push(i+1);
+    }
+    const handleClickButton= (e)=>{
+        history(`?start=${(e.target.value-1)*9}&end=${(e.target.value-1)*9+limit}`)
+    }
     const handleNext= (e)=>{
         if(foods.length>end)
         history(`?start=${start+limit}&end=${end+limit}`) 
@@ -30,6 +38,9 @@ export const Pagination = ()=>{
     return (
         <div className="next-prev">
             <span id="previous" className="spanButton" onClick={handlePrev}>Previous</span>
+            {arrNumbers.map(n=>{
+                return <button key={n} value={n} onClick={handleClickButton}>{n}</button>
+            })}
             <span className="spanButton" onClick={handleNext}>Next</span>
         </div>
     )

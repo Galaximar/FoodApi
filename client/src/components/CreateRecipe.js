@@ -68,7 +68,7 @@ export const CreateRecipe=()=>{
                                         <input className={typeof(errors[x])==='object'?(errors[x].length)&&"danger":errors[x]&&"danger"} type="text" name={x} value={food[x]} onChange={handleInputChange}/>
                                     </div>
                                     <div className="error">
-                                        {typeof(errors[x])==='object'?<span className="danger">{errors[x].join(" ")}</span>
+                                        {typeof(errors[x])==='object'?<span className="danger">{errors[x].join(" and ")}</span>
                                         :<span className="danger">{errors[x]}</span>}
                                     </div>
                                 </div>

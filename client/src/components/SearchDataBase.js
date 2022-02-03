@@ -1,16 +1,22 @@
 import React, { useEffect, useState } from "react";
-import {useDispatch} from 'react-redux'
-import { getAllFood } from "../redux/actions/actions";
+import {useDispatch, useSelector} from 'react-redux'
+import { ascOrDsc, ascOrDscByPoints, dietFilter, getAllFood } from "../redux/actions/actions";
 
 export const SearchDataBase=()=>{
     const dispatch=useDispatch();
     const [value,setValue]=useState();
+    const orderAlphabetic=useSelector(state=>state.filterTypes.orderAlphabetic);
+    const orderPoints=useSelector(state=>state.filterTypes.orderByPoints);
+    const dietTypes=useSelector(state=>state.filterTypes.byDiet);
     const handleChange=(e)=>{
         setValue(e.target.value);
     }
-    useEffect(()=>{
-        if(value==="two") dispatch(getAllFood());
-        else dispatch(getAllFood(0,value));
+    useEffect(async ()=>{
+        if(value==="two") await dispatch(getAllFood());
+        else await dispatch(getAllFood(0,value));
+        await dispatch(dietFilter(dietTypes))
+        await dispatch(ascOrDscByPoints({orderPoints}));
+        await dispatch(ascOrDsc({orderAlphabetic}));
     },[dispatch,value])
     return (
         <div >
