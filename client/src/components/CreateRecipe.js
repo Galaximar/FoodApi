@@ -88,7 +88,10 @@ export const CreateRecipe=()=>{
                                 </label>)
                         })}
                     </div>
-                    {!errors.existError? <input type="submit"/>:null}
+                    <div className="submitRecipe">
+                    {!errors.existError? <input className="submitRecipeButton" type="submit"/>:null}
+                    </div>
+                    
                 </form>
             </div>
 

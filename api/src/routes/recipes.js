@@ -103,7 +103,7 @@ router.post("/:foodId/diet/:dietId",async (req,res)=>{
         const {foodId,dietId} = req.params;
         const food = await Recipes.findByPk(foodId);
         await food.addDiet(dietId);
-        res.sendStatus(200)
+        res.sendStatus(200);
     } catch (error) {
         next(error);
     }

@@ -38,6 +38,7 @@ export const Filter = ()=>{
         dispatch(changeFilterTypes(valueOrderByPoints));
     },[valueOrderByPoints,dispatch])
 
+
     return (
         <div className="filter">
             <form >

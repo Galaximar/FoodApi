@@ -21,8 +21,7 @@ body {
   justify-content: space-around;
   align-items: center;
   background-color: rgb(243, 235, 215);
-  height: 50px;
-  border: solid 1px black;
+  height: 8vh;
 }
 .nav h2 {
   font-size: 18px;
@@ -34,6 +33,7 @@ body {
 .images {
   margin-top: 5px;
   display: grid;
+  justify-items: center;
   grid-template-columns: repeat(3,1fr);
   gap:5px;
 }
@@ -69,41 +69,60 @@ body {
   width: 500px;
   height: 20px;
 }
-.contenedorInicial {
-  position: relative;
-  height: 100vh;
+.landdingConteiner {
+  display: grid;
+  grid-template-columns: repeat(2,1fr);
+  grid-template-rows: 1fr;
+  height: 92vh;
+  margin-bottom: 50px;
+}
+.landdingIzq {
+  text-overflow:ellipsis;
+  background-color: rgba(95, 94, 92, 0.7);
+  border-radius: 20px;
+  margin: 10px;
+  padding: 5% 0;
+}
+.information {
+  padding: 10% 0;
+}
+.landdingIzq img {
+  width: 250px;
+  margin: 5px;
+  border-radius: 20px;
+  float: left;
+}
+.landdingDer {
   display: flex;
   flex-direction: column;
+  height: 92vh;
   justify-content: center;
   align-items: center;
 }
-
-.contenedorInicial img {
-  position: absolute;
-  width: 220px;
-  height: 220px;
-  border-radius: 110px;
+.landdingDer a {
+  text-decoration: none;
+  color: rgb(61, 33, 19);
+  border: solid 1px rgb(61, 33, 19);
+  background: linear-gradient(45deg,rgb(249, 203, 164),rgb(61, 33, 19));
+  font-size: 20px;
+  padding:5px;
+  width: 70px;
+  position: fixed;
+  margin-top: 300px;
+  text-align: center;
+  cursor: pointer;
+}
+.landdingDer a:hover {
+  background: linear-gradient(135deg,rgb(249, 203, 164),rgb(61, 33, 19));
+}
+.landdingDer img {
+  width: 500px;
+  height: 500px;
   opacity: 0.9;
 }
 .contenedorInicial h1{
   position: absolute;
   margin-top: -255px;
-}
-.contenedorInicial a{
-  position: absolute;
-  margin-top: 260px;
-  text-decoration: none;
-  color: rgb(61, 33, 19);
-  border: solid 1px rgb(61, 33, 19);
-  background: linear-gradient(45deg,rgb(249, 203, 164),rgb(61, 33, 19));
-  padding:5px;
-  width: 70px;
-  text-align: center;
-  font-size: 20px;
-  cursor: pointer;
-}
-.contenedorInicial a:hover {
-  background: linear-gradient(135deg,rgb(249, 203, 164),rgb(61, 33, 19));
 }
 .form {
   display: grid;
@@ -266,17 +285,25 @@ input.danger {
   font-size: 25px;
 }
 .plusCard {
+  position:fixed;
   grid-column: 1/4;
-  margin: 200px;
-  justify-items: center;
-  background-color: rgb(243, 235, 215);
+  width: 100%;
+  height: 100%;
+  margin-top: -5px;
+  background-image: url("./img/fondo8T.png");
   text-align: center;
+  display: grid;
+  grid-template-rows: repeat(3,28vh);
 }
-.plusCard img {
-  display: block;
-  margin: auto;
-  width: 90%;
+.bgPlusCard {
+  grid-row: 1/4;
+  margin-bottom: 100px;
+  margin-top: 100px;
+  background-color: rgb(243, 235, 215,0.7);
+  margin-right: 100px;
+  margin-left: 100px;
 }
+
 .filter {
   display: grid;
   grid-template-columns: 1fr;
@@ -291,3 +318,15 @@ input.danger {
   background-color: rgb(243, 235, 215);
   border:none;
 }
+.submitRecipe{
+  display: flex;
+  justify-content: center;
+}
+.submitRecipeButton{
+  width: 100px;
+  height: 30px;
+  background-color: chartreuse;
+  border: none;
+  cursor: pointer;
+}
+

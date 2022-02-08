@@ -50,7 +50,7 @@ const reducer = (state = initialState, action) => {
             if(orderAlphabetic!=="none"){
                 foodOrder=foodOrder.sort((a,b)=>{
                     if(orderAlphabetic==="asc"){
-                        if(a.name>b.name) return 1 //a es el de la derecha
+                        if(a.name>b.name) return 1
                         if(a.name<b.name) return -1
                         return 0;
                     } else {

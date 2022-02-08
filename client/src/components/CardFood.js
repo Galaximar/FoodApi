@@ -20,8 +20,10 @@ export const CardFood=()=>{
     return (
         <div className="images">
             {foods[0]==="Loading"?<div className="plusCard">
-                <h2 className="largeFont">Wait a few seconds</h2>
-                <img src="https://qitian.be/wp-content/uploads/2019/10/spinner-loading.gif" alt="loading..."/>
+                <div className="bgPlusCard"> 
+                    <h2 className="largeFont">Wait a few seconds</h2>
+                    <img src="https://qitian.be/wp-content/uploads/2019/10/spinner-loading.gif" alt="loading..."/>
+                </div>
             </div>:
             foods[0]==="Not found"?
             <div className="plusCard">
@@ -37,7 +39,7 @@ export const CardFood=()=>{
                     <Link to={`info/${f.id}`}>
                         <p className="titleInfoCard">
                             {f.name}<br/>
-                            {f.points} Diet Types: {f.diets.map(d=>d[0].toUpperCase()+d.slice(1)).join(", ")}
+                            Points: {f.points} Diet Types: {f.diets.map(d=>d[0].toUpperCase()+d.slice(1)).join(", ")}
                         </p>
                         <img src={f.image} alt={f.name}/>
                     </Link>    
