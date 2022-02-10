@@ -60,27 +60,30 @@ export const CreateRecipe=()=>{
             <div>
                 <form autoComplete="off" onSubmit={handleSubmit}>
                     <div className="formCreate1">
-                        {data.map((x,i)=>{
-                            return (
-                                <div key={i} className="conteinerInputCreate1">
-                                    <div className="inputCreate">
-                                        <label>{x[0].toUpperCase()+x.slice(1)}</label> 
-                                        <input className={typeof(errors[x])==='object'?(errors[x].length)&&"danger":errors[x]&&"danger"} type="text" name={x} value={food[x]} onChange={handleInputChange}/>
+                        <div className="bg-form1">
+                            {data.map((x,i)=>{
+                                return (
+                                    <div key={i} className="conteinerInputCreate1">
+                                        <div className="inputCreate1">
+                                            <label>{x[0].toUpperCase()+x.slice(1)}</label> 
+                                            <input className={`${typeof(errors[x])==='object'?(errors[x].length)&&"danger":errors[x]&&"danger"} inputCreate`} type="text" name={x} value={food[x]} onChange={handleInputChange}/>
+                                        </div>
+                                        <div className="error">
+                                            {typeof(errors[x])==='object'?<span className="danger">{errors[x].join(" and ")}</span>
+                                            :<span className="danger">{errors[x]}</span>}
+                                        </div>
                                     </div>
-                                    <div className="error">
-                                        {typeof(errors[x])==='object'?<span className="danger">{errors[x].join(" and ")}</span>
-                                        :<span className="danger">{errors[x]}</span>}
-                                    </div>
-                                </div>
-                            )
-                        })}
+                                )
+                            })}
+                        </div>
                         <div className="imageLoad">
                             {food.image?<img className="img" alt="imgNotLoad" src={food.image}/>:null}
                         </div>
                     </div>
+                    <br/>
                     <p className="dietTypesTitle">Select a Diet Types</p>
                     <div className="dietTypes">
-                    {errors.dietTypes?<span className="danger">{errors.dietTypes}</span>:null}
+                    {errors.dietTypes?<span className="error danger">{errors.dietTypes}</span>:null}
                     {dietData.map(({dietType:d,id:i})=>{
                             return (<label key={i}>
                                 {d[0].toUpperCase()+d.slice(1)}
@@ -94,11 +97,11 @@ export const CreateRecipe=()=>{
                     
                 </form>
             </div>
-
-            <div className="stepInput">
+            
+            <div className="stepInput stepBg">
                 <form autoComplete="off" onSubmit={stepAgree}>
-                    <label className="titleFont">Steps  </label><br/><br/>
-                    {errors.instructions&&<span className="danger">{errors.instructions}</span>}<br/><input className="mediumFont" type="text" value={food.instructions} name="instructions" onChange={handleInputChange}/>
+                    <label className="titleFont">Steps  </label><br/>
+                    {errors.instructions&&<span className="error danger">{errors.instructions}</span>}<br/><input className="mediumFont inputStep" type="text" value={food.instructions} name="instructions" onChange={handleInputChange}/>
                     <input className="mediumFont" name="instructions" type="submit" value="Agree"/>
                 </form>
             </div>

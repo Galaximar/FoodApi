@@ -7,9 +7,11 @@ export const Container= ()=>{
     return (
         <div>
             <Search />
-            <CardFood />
+            <div className="gridCards">
+                <Filter />
+                <CardFood />
+            </div>
             <Pagination />
-            <Filter />
         </div>
     )
 }

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {useDispatch, useSelector} from 'react-redux'
 import { getAllFood, loading } from "../redux/actions/actions";
 import { Link } from 'react-router-dom';
@@ -9,6 +9,18 @@ export const CardFood=()=>{
     let foods= useSelector(state=>state.food);
     let start=useSelector(state=>state.start)
     let end=useSelector(state=>state.end);
+    let [hover,setHover]=useState({action:"",id:-1});
+    let [errorImg,setErrorImg]=useState({error:"",id:[]});
+    const imgNotFound=(e,f)=>{
+        let ant=[...errorImg.id]
+        setErrorImg({error:"imgNotLoad",id:[...ant,f.id]});
+    }
+    const mouseEnter=(e,f)=>{
+        setHover({action:"enter",id:f.id});
+    }
+    const mouseLeave=()=>{
+        setHover("leave")
+    }
     useEffect(()=>{
         dispatch(getAllFood());
     },[dispatch])
@@ -35,13 +47,24 @@ export const CardFood=()=>{
                 </div>
             </div>:foods.slice(start,end)?.map(f=>{
                 return (
-                <div key={f.id} className="image">
-                    <Link to={`info/${f.id}`}>
-                        <p className="titleInfoCard">
-                            {f.name}<br/>
-                            Points: {f.points} Diet Types: {f.diets.map(d=>d[0].toUpperCase()+d.slice(1)).join(", ")}
-                        </p>
-                        <img src={f.image} alt={f.name}/>
+                <div key={f.id} className="image" onMouseLeave={mouseLeave} onMouseEnter={(e)=>mouseEnter(e,f)}>
+                    <Link className="gridImgP" to={`info/${f.id}`}>
+                        {(hover.action==="enter"&&hover.id===f.id)&&<div className="onHover">
+                            <p>
+                                Diet Types: {f.diets.map(d=>d[0].toUpperCase()+d.slice(1)).join(", ")}<br/>
+                                HealthScore: <meter value={f.healthScore} min="0" low="30" high="70" max="100" optimum="20"> </meter> {f.healthScore}<br/>
+                                Points:{f.points}
+                            </p>
+                            <button className="moreInfo">More Info</button>
+                        </div>}
+                        <div className={`${(hover.action==="enter"&&hover.id===f.id)&&"hover"}`}>
+                            <div className="divImg">{(errorImg.error==="imgNotLoad"&&errorImg.id.find(x=>x===f.id))?<img src="https://cdn.dribbble.com/users/966009/screenshots/2630351/404-donut-dribble.jpg" alt="ImgNotFound"/>:<img onError={(e)=>imgNotFound(e,f)} src={f.image} alt={f.name}/>}</div>
+                            <div>
+                                <p className="titleInfoCard divP">
+                                    {f.name}
+                                </p>
+                            </div>
+                        </div>
                     </Link>    
                 </div>
                 )
