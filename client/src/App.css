@@ -8,13 +8,51 @@ body {
 }
 .next-prev{
   display: flex;
-  justify-content: space-between;
+  justify-content: space-evenly;
+  align-items: center;
   margin: 5px;
+}
+.buttonsPag{
+  background-color: rgb(230, 169, 16);
+  opacity: 0.8;
+  color: rgb(243, 235, 215);
+  border-radius: 50%;
+  height: 30px;
+  width: 30px;
+  border:none;
+  cursor: pointer;
+}
+.pagSelected{
+  background-color: rgb(88, 88, 189);
 }
 .spanButton {
   background-color: rgb(243, 235, 215);
   padding:5px;
   cursor: pointer;
+}
+.navFather{
+  position: sticky;
+  top: 0px;
+  z-index: 1; 
+}
+.active{
+  display: flex;
+  align-items: center;
+  height: 100%;
+  background-color: rgb(88, 88, 189);
+  position: relative;
+}
+.active:after{
+  position: absolute;
+  content: "";
+  display: block;
+  bottom: -10px;
+  width: 10px;
+  height: 10px;
+  background-color: blueviolet;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  right: calc(50% - 5px);
 }
 .nav {
   display: flex;
@@ -43,14 +81,10 @@ body {
   position: relative;
   height: 320px;
   width: 100%;
-  cursor: pointer;
 }
 .gridImgP{
   text-decoration: none;
   color: black;
-}
-.hover{
-  opacity: 0;
 }
 .onHover{
   position: absolute;
@@ -107,6 +141,7 @@ meter:-moz-meter-sub-sub-optimum::-moz-meter-bar {
   width: 80px;
   height: 30px;
   font-size: 15px;
+  cursor: pointer;
 }
 .moreInfo:hover{
   background-color: white;
@@ -118,15 +153,24 @@ meter:-moz-meter-sub-sub-optimum::-moz-meter-bar {
 }
 .searchBar {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
+  position: relative;
   align-items: center;
   height: 50px;
+  width: 100%;
+  border-top-left-radius:10px;
+  border-top-right-radius: 10px;
   background-color: rgb(218, 212, 197);
   font-size: 20px;
 }
 .searchBar input {
-  width: 500px;
-  height: 20px;
+  position: absolute;
+  top: 10px;
+  bottom: 10px;
+  right: 10px;
+  left: 10px;
+  padding: 0px;
+  border: none;
 }
 .landdingConteiner {
   display: grid;
@@ -192,15 +236,23 @@ meter:-moz-meter-sub-sub-optimum::-moz-meter-bar {
 span.danger {
   display: flex;
   flex-direction: column;
-  justify-content:flex-start;
+  justify-content:center;
   color: white;
   text-align: center;
   font-size: 15px;
+  background-color: rgb(204, 102, 102);
+  min-height: 40px;
+  width: 100%;
+  border-radius: 15px;
 }
 
 input.danger {
   border: 2px solid red;
   padding: 0px;
+}
+
+.error.danger p {
+  margin: 0;
 }
 
 .conteinerInfo {
@@ -270,12 +322,7 @@ input.danger {
 .inputCreate input {
   width: 100%;
 }
-.error {
-  background-color: rgb(204, 102, 102);
-  height: 40px;
-  width: 100%;
-  border-radius: 15px;
-}
+
 .formCreate1 {
   display: grid;
   grid-template-columns: repeat(2,1fr);
@@ -385,7 +432,7 @@ input.danger {
 .filter {
   display: grid;
   position: sticky;
-  top: 15px;
+  top: calc(8vh + 15px);
   grid-template-columns: 1fr;
   grid-template-rows: repeat(5,0.02fr);
   justify-items: start;
@@ -394,10 +441,6 @@ input.danger {
   margin: 15px;
   border-radius: 10px;
   text-align: center;
-}
-.buttonsPag{
-  background-color: rgb(243, 235, 215);
-  border:none;
 }
 .submitRecipe{
   display: flex;

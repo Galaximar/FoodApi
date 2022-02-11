@@ -18,7 +18,7 @@ router.get("/",(req,res)=>{
         const {name,searchDb,searchApi} = req.query;
         let promiseApi=[];
         if(!searchDb){
-            promiseApi=axios.get(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${apiKey}&addRecipeInformation=true&number=3`)
+            promiseApi=axios.get(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${apiKey}&addRecipeInformation=true&number=1`)
             .then(({data})=>{
                 let info=data.results.map(f=>{
                     return {

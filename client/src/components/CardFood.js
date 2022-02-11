@@ -48,24 +48,23 @@ export const CardFood=()=>{
             </div>:foods.slice(start,end)?.map(f=>{
                 return (
                 <div key={f.id} className="image" onMouseLeave={mouseLeave} onMouseEnter={(e)=>mouseEnter(e,f)}>
-                    <Link className="gridImgP" to={`info/${f.id}`}>
-                        {(hover.action==="enter"&&hover.id===f.id)&&<div className="onHover">
+                    <div className="gridImgP">
+                        {(hover.action==="enter"&&hover.id===f.id)?<div className="onHover">
                             <p>
                                 Diet Types: {f.diets.map(d=>d[0].toUpperCase()+d.slice(1)).join(", ")}<br/>
                                 HealthScore: <meter value={f.healthScore} min="0" low="30" high="70" max="100" optimum="20"> </meter> {f.healthScore}<br/>
                                 Points:{f.points}
                             </p>
-                            <button className="moreInfo">More Info</button>
-                        </div>}
-                        <div className={`${(hover.action==="enter"&&hover.id===f.id)&&"hover"}`}>
+                            <Link to={`info/${f.id}`}><button className="moreInfo">More Info</button></Link>
+                        </div>:<div>
                             <div className="divImg">{(errorImg.error==="imgNotLoad"&&errorImg.id.find(x=>x===f.id))?<img src="https://cdn.dribbble.com/users/966009/screenshots/2630351/404-donut-dribble.jpg" alt="ImgNotFound"/>:<img onError={(e)=>imgNotFound(e,f)} src={f.image} alt={f.name}/>}</div>
                             <div>
                                 <p className="titleInfoCard divP">
                                     {f.name}
                                 </p>
                             </div>
-                        </div>
-                    </Link>    
+                        </div>}
+                    </div>    
                 </div>
                 )
             })

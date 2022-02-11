@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import {useDispatch, useSelector} from 'react-redux'
 import { validate } from "../functions/validate";
 import { createRecipe, enlaceFoodWithDiet } from "../redux/actions/actions";
+import swal from "sweetalert";
+import { useNavigate } from "react-router-dom";
 
 const data=["name","image","summary","points","healthScore"]
 
@@ -46,10 +48,19 @@ export const CreateRecipe=()=>{
     }));
     }
 
-
+    let history=useNavigate();
     const handleSubmit=(e)=>{
         e.preventDefault()
         dispatch(createRecipe({...food,instructions:[{steps:instructionsObject}]}))
+        swal({
+            title:"Recipe Create",
+            text:"You want to create another recipe?",
+            icon:"success",
+            buttons:["No","Create Another"],
+        }).then((r)=>{
+            if(r) document.location.reload();
+            else history("/food");
+        })
     }
 
     useEffect(()=>{
@@ -69,8 +80,8 @@ export const CreateRecipe=()=>{
                                             <input className={`${typeof(errors[x])==='object'?(errors[x].length)&&"danger":errors[x]&&"danger"} inputCreate`} type="text" name={x} value={food[x]} onChange={handleInputChange}/>
                                         </div>
                                         <div className="error">
-                                            {typeof(errors[x])==='object'?<span className="danger">{errors[x].join(" and ")}</span>
-                                            :<span className="danger">{errors[x]}</span>}
+                                            {typeof(errors[x])==='object'?<span className={`${errors[x].length&&"danger"}`}>{errors[x].join(" and ")}</span>
+                                            :<span className={`${errors[x]&&"danger"}`}>{errors[x]}</span>}
                                         </div>
                                     </div>
                                 )
@@ -83,7 +94,7 @@ export const CreateRecipe=()=>{
                     <br/>
                     <p className="dietTypesTitle">Select a Diet Types</p>
                     <div className="dietTypes">
-                    {errors.dietTypes?<span className="error danger">{errors.dietTypes}</span>:null}
+                    {errors.dietTypes?<span className="error danger"><p>{errors.instructions}</p></span>:null}
                     {dietData.map(({dietType:d,id:i})=>{
                             return (<label key={i}>
                                 {d[0].toUpperCase()+d.slice(1)}
@@ -101,7 +112,7 @@ export const CreateRecipe=()=>{
             <div className="stepInput stepBg">
                 <form autoComplete="off" onSubmit={stepAgree}>
                     <label className="titleFont">Steps  </label><br/>
-                    {errors.instructions&&<span className="error danger">{errors.instructions}</span>}<br/><input className="mediumFont inputStep" type="text" value={food.instructions} name="instructions" onChange={handleInputChange}/>
+                    {errors.instructions&&<span className="error danger"><p>{errors.instructions}</p></span>}<br/><input className="mediumFont inputStep" type="text" value={food.instructions} name="instructions" onChange={handleInputChange}/>
                     <input className="mediumFont" name="instructions" type="submit" value="Agree"/>
                 </form>
             </div>

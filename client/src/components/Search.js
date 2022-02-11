@@ -28,7 +28,6 @@ export const Search = ()=>{
     return (
         <div className="searchBar">
             <form onSubmit={handleSubmit}>
-                <label>Search a Food </label>
                 <input
                 type="text"
                 placeholder="Write a food. . ."

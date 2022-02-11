@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import {useDispatch, useSelector} from 'react-redux'
 import { SearchDataBase } from "./SearchDataBase"
+import { Search } from "./Search"
 import {ascOrDsc, ascOrDscByPoints, changeFilterTypes, dietFilter } from "../redux/actions/actions";
 
 export const Filter = ()=>{
@@ -41,6 +42,8 @@ export const Filter = ()=>{
 
     return (
         <div className="filter">
+            <Search />
+            <SearchDataBase />
             <form >
                 <select name="orderAlphabetic" onChange={handleChangeOrderByAbc}>
                     <option value="none">Order (a-z)</option>
@@ -62,9 +65,6 @@ export const Filter = ()=>{
                     return <label key={i} htmlFor={`cbox${i}`}><input type="checkbox"  value={d} id={`cbox${i}`} onChange={handleChangeDiet}/>{d[0].toUpperCase()+d.slice(1)}</label>
                 })}
             </form>
-            
-            <SearchDataBase />
-
         </div>
     )
 }
