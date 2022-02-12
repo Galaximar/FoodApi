@@ -1,26 +1,32 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {useDispatch, useSelector} from 'react-redux'
 import { foodInfo } from "../redux/actions/actions";
 import { useParams } from 'react-router-dom';
 import { removeUltimateLines } from "../functions/removeUltimateLines";
+import { Loading } from "./Loading";
 
 export const CardInfo=()=>{
     const dispatch=useDispatch();
     let foodDetail=useSelector(({foodDetail})=>foodDetail);
+    let [loading,setLoading]=useState(true);
     let {name,image,summary,points,healthScore,instructions}=foodDetail
     summary=removeUltimateLines(summary);
     let {id}=useParams();
-    useEffect(()=>{
-        dispatch(foodInfo(id));
+    useEffect(async ()=>{
+        await dispatch(foodInfo(id));
+        setLoading(false)
     },[dispatch,id])
     return (
-        <div className="conteinerInfo">
+        <>
+        {loading?<Loading />:
+            <div className="conteinerInfo">        
             <div>
                 <h2 className="subtitle">{name}  </h2>
                 <img className="imgInfo" src={image} alt="imgRecipe"/>
                 <h2 className="subtitle">Summary</h2>
                 <p className="summary" dangerouslySetInnerHTML={{__html: summary}}></p>
             </div>
+
             <div>
             <h2 className="subtitle">Steps</h2>
             {instructions?instructions[0]?.steps.map((s,i)=>{
@@ -32,6 +38,9 @@ export const CardInfo=()=>{
                     <p>Food Points <br/><br/>{points}</p>
                 </div>
             </div>
-        </div>
+
+            </div>
+        }
+        </>
     )
 }
