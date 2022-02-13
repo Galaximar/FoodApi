@@ -14,14 +14,25 @@ export const Filter = ()=>{
 
     const handleChangeOrderByAbc= (e)=>{
         setValueOrderByAbc({orderAlphabetic:e.target.value});
+        document.getElementById("orderPoints").reset();
+        window.scrollTo({top:0,left:0,behavior: 'smooth'});
     }
     const handleChangeOrderByPoints= (e)=>{
         setValueOrderByPoints({orderPoints:e.target.value});
+        document.getElementById("orderAlphabetic").reset();
+        window.scrollTo({top:0,left:0,behavior: 'smooth'});
     }
 
-    const handleChangeDiet= (e)=>{
-        if(e.target.checked) setValueDiet([...valueDiet,e.target.value]) 
-        else setValueDiet(valueDiet.filter(d=>d!==e.target.value))
+    const handleAgreeDiet=(e)=>{
+        let exist=valueDiet.find((d)=>d===e.target.value)
+        if(e.target.value!=="diets"&&!exist)
+        setValueDiet([...valueDiet,e.target.value]);
+        document.getElementById("dietForm").reset()
+        window.scrollTo({top:0,left:0,behavior: 'smooth'});
+    }
+    const suprOptionDiet=(e)=>{
+        setValueDiet([...valueDiet.filter((d)=>d!==e.target.value)]);
+        window.scrollTo({top:0,left:0,behavior: 'smooth'});
     }
 
     useEffect(()=>{
@@ -43,15 +54,18 @@ export const Filter = ()=>{
     return (
         <div className="filter">
             <Search />
+            <label>Search by Db or Api</label>
             <SearchDataBase />
-            <form >
+            <label>Order Alphabetic</label>
+            <form id="orderAlphabetic">
                 <select name="orderAlphabetic" onChange={handleChangeOrderByAbc}>
                     <option value="none">Order (a-z)</option>
                     <option value="asc">Ascendent</option>
                     <option value="dsc">Descendent</option>
                 </select>
             </form>
-            <form >
+            <label>Order by Points</label>
+            <form id="orderPoints">
                 <select name="orderPoints" onChange={handleChangeOrderByPoints}>
                     <option value="none">Order By Points</option>
                     <option value="ascPoints">Ascendent</option>
@@ -59,12 +73,28 @@ export const Filter = ()=>{
                 </select>
             </form>
 
-            <form> 
-                <label>Diet Filter</label><br/>
+            <label>Filter by Diet Types</label>
+
+            <form id="dietForm">
+                <select name="dietFilter" onChange={handleAgreeDiet}>
+                    <option value="diets">Diets</option>
                 {dietData?.map(({dietType:d},i)=>{
-                    return <label key={i} htmlFor={`cbox${i}`}><input type="checkbox"  value={d} id={`cbox${i}`} onChange={handleChangeDiet}/>{d[0].toUpperCase()+d.slice(1)}</label>
+                    return <option key={i} value={d}>{d[0].toUpperCase()+d.slice(1)}</option>
                 })}
+                </select>
             </form>
+
+            <div className="dietSelectedContainer">
+                {valueDiet.map((d,i)=>{
+                    return (
+                        <div key={i} className="dietSelectedStyle">
+                            <button value={d} className="dietSelectedButton" onClick={suprOptionDiet}>X</button>
+                            <label className="dietSelected">{d[0].toUpperCase()+d.slice(1)}</label>
+                        </div>
+                    )
+                })}
+            </div>
+
         </div>
     )
 }

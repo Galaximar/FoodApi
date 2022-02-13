@@ -95,7 +95,7 @@ const reducer = (state = initialState, action) => {
             if(dietsReciveds.length){
                 let found=[];  
                 foodDiet=foodOriginal?.filter((food)=>{ 
-                return food.diets.some((f,i)=>{
+                return food.diets?.some((f,i)=>{
                     let options=dietsReciveds.find((options)=>options===f)
                     if(options) {
                         found.push(options)
@@ -111,6 +111,7 @@ const reducer = (state = initialState, action) => {
                 })
             })
             } 
+            if(foodDiet.length===0) foodDiet[0]="Not found";
             return {...state,food:foodDiet}
         default:
             return state;

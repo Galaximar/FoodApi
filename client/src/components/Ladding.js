@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import logo from "../img/resumen.jpg"
 export const Ladding = ()=>{
     return (
-        <div className="landdingConteiner">
+        <div className="landdingContainer">
             <div className="landdingIzq">
                 <div className="information">
                     <img src={logo} alt="img"/>

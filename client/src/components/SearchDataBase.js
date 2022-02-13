@@ -11,12 +11,15 @@ export const SearchDataBase=()=>{
     const handleChange=(e)=>{
         setValue(e.target.value);
     }
-    useEffect(async ()=>{
-        if(value==="two") await dispatch(getAllFood());
-        else await dispatch(getAllFood(0,value));
-        await dispatch(dietFilter(dietTypes))
-        await dispatch(ascOrDscByPoints({orderPoints}));
-        await dispatch(ascOrDsc({orderAlphabetic}));
+    useEffect(()=>{
+        async function dispatchs(){
+            if(value==="two") await dispatch(getAllFood());
+            else await dispatch(getAllFood(0,value));
+            await dispatch(dietFilter(dietTypes))
+            await dispatch(ascOrDscByPoints({orderPoints}));
+            await dispatch(ascOrDsc({orderAlphabetic}));
+        }
+        dispatchs();
     },[dispatch,value])
     return (
         <div >

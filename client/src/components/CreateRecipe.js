@@ -103,7 +103,7 @@ export const CreateRecipe=()=>{
                         })}
                     </div>
                     <div className="submitRecipe">
-                    {!errors.existError? <input className="submitRecipeButton" type="submit"/>:null}
+                    {!errors.existError? <input value="Create recipe" className="submitRecipeButton" type="submit"/>:null}
                     </div>
                     
                 </form>
