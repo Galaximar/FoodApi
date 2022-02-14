@@ -105,10 +105,10 @@ router.post("/:foodId/diet/:dietId",async (req,res)=>{
         await food.addDiet(dietId);
         res.sendStatus(200);
     } catch (error) {
-        next(error);
+        console(error);
     }
 })
-router.post("/create", async (req,res,next)=>{
+router.post("/create", async (req,res)=>{
     try {
         let {name,image,summary,points,healthScore,instructions}=req.body;
         const newRecipe= await Recipes.create({name,image,summary,points,healthScore,instructions});

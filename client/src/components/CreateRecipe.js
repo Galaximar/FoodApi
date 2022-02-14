@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import {useDispatch, useSelector} from 'react-redux'
 import { validate } from "../functions/validate";
-import { createRecipe, enlaceFoodWithDiet } from "../redux/actions/actions";
+import { createRecipe, dietTypes, enlaceFoodWithDiet } from "../redux/actions/actions";
 import swal from "sweetalert";
 import { useNavigate } from "react-router-dom";
+import { Review } from "./Review";
 
 const data=["name","image","summary","points","healthScore"]
 
@@ -16,6 +17,7 @@ export const CreateRecipe=()=>{
     let [numberStep,setNumberStep]=useState(1);
     let [instructionsObject,setInstructionsObject]=useState([])
     let [errors, setErrors] = useState({...initialStates,existError:true});
+    let [dietNames,setDietNames]=useState([]);
     const dispatch=useDispatch();
     const stepAgree=(e)=>{
         e.preventDefault()
@@ -27,7 +29,6 @@ export const CreateRecipe=()=>{
     useEffect(()=>{
         setErrors(validate({...food,instructionsObject}));
     },[instructionsObject])
-
     const handleInputChange = function(e,option){
     let arr=[...food.dietTypes];
     if(option!=="checkbox") {
@@ -35,9 +36,11 @@ export const CreateRecipe=()=>{
     }
     else {
         if(e.target.checked){
+            setDietNames([...dietNames,e.target.name])
             arr=[...food.dietTypes];
             arr.push(e.target.value)
         } else {
+            setDietNames(dietNames.filter(d=>d!==e.target.name))
             arr=[...food.dietTypes].filter(d=>d!==e.target.value)
         }
         setFood({...food,dietTypes:arr});
@@ -88,7 +91,16 @@ export const CreateRecipe=()=>{
                             })}
                         </div>
                         <div className="imageLoad">
-                            {food.image?<img className="img" alt="imgNotLoad" src={food.image}/>:null}
+                            <Review 
+                            name={food.name}
+                            image={food.image}
+                            summary={food.summary}
+                            points={food.points}
+                            healthScore={food.healthScore}
+                            instructionsObject={instructionsObject}
+                            dietNames={dietNames}
+                            errors={errors}
+                            />
                         </div>
                     </div>
                     <br/>
