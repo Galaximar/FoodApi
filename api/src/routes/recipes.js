@@ -105,7 +105,7 @@ router.post("/:foodId/diet/:dietId",async (req,res)=>{
         await food.addDiet(dietId);
         res.sendStatus(200);
     } catch (error) {
-        console(error);
+        console.log(error);
     }
 })
 router.post("/create", async (req,res)=>{

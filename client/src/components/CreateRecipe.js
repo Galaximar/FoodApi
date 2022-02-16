@@ -24,6 +24,7 @@ export const CreateRecipe=()=>{
         if(food.instructions){
             setInstructionsObject([...instructionsObject,{number:numberStep,step:food.instructions}])
             setNumberStep(++numberStep);
+            food.instructions=""
         }
     }
     useEffect(()=>{
@@ -70,10 +71,10 @@ export const CreateRecipe=()=>{
         food.dietTypes.map((d)=>dispatch(enlaceFoodWithDiet(foodId,d)))
     },[dispatch,foodId])
     return (
-        <div className="conteinerCreate">
+        <div className="conteinerCreate formCreate1">
             <div>
                 <form autoComplete="off" onSubmit={handleSubmit}>
-                    <div className="formCreate1">
+                    <div>
                         <div className="bg-form1">
                             {data.map((x,i)=>{
                                 return (
@@ -90,49 +91,62 @@ export const CreateRecipe=()=>{
                                 )
                             })}
                         </div>
-                        <div className="imageLoad">
-                            <Review 
-                            name={food.name}
-                            image={food.image}
-                            summary={food.summary}
-                            points={food.points}
-                            healthScore={food.healthScore}
-                            instructionsObject={instructionsObject}
-                            dietNames={dietNames}
-                            errors={errors}
-                            />
+
+
+                        <div className="dietBg">
+                            <div className="dietTypesTitle">
+                                <p>Select a Diet Types</p>
+                                {errors.dietTypes?<span className="error danger"><p>{errors.dietTypes}</p></span>:null}
+                            </div>
+                            <div className="dietTypes">
+                                {dietData.map(({dietType:d,id:i})=>{
+                                        return (<label key={i}>
+                                            {d[0].toUpperCase()+d.slice(1)}
+                                            <input type="checkbox" name={d} value={i} onChange={(e)=>handleInputChange(e,"checkbox")}/>
+                                            </label>)
+                                    })}
+                            </div>
+                            <div className="submitRecipe">
+                                {!errors.existError? <input value="Create recipe" className="submitRecipeButton" type="submit"/>:<label className="noSubmitButton">Create Recipe</label>}
+                            </div>
                         </div>
-                    </div>
-                    <br/>
-                    <p className="dietTypesTitle">Select a Diet Types</p>
-                    <div className="dietTypes">
-                    {errors.dietTypes?<span className="error danger"><p>{errors.instructions}</p></span>:null}
-                    {dietData.map(({dietType:d,id:i})=>{
-                            return (<label key={i}>
-                                {d[0].toUpperCase()+d.slice(1)}
-                                <input type="checkbox" name={d} value={i} onChange={(e)=>handleInputChange(e,"checkbox")}/>
-                                </label>)
-                        })}
-                    </div>
-                    <div className="submitRecipe">
-                    {!errors.existError? <input value="Create recipe" className="submitRecipeButton" type="submit"/>:null}
+
+
+
                     </div>
                     
                 </form>
-            </div>
-            
-            <div className="stepInput stepBg">
+                <div className="stepBg">
+                <div className="stepInput">
                 <form autoComplete="off" onSubmit={stepAgree}>
                     <label className="titleFont">Steps  </label><br/>
                     {errors.instructions&&<span className="error danger"><p>{errors.instructions}</p></span>}<br/><input className="mediumFont inputStep" type="text" value={food.instructions} name="instructions" onChange={handleInputChange}/>
                     <input className="mediumFont" name="instructions" type="submit" value="Agree"/>
                 </form>
+                </div>
+
+                <div>
+                    {instructionsObject?.map(i=><p className="stepsAgree" key={i.number}><span className="numberStep">{i.number}</span>{i.step[0]?.toUpperCase()+i.step?.slice(1)}</p>)}
+                </div>
+                <br/>
+            </div>
             </div>
 
-            <div>
-                {instructionsObject?.map(i=><p className="stepsAgree" key={i.number}><span className="numberStep">{i.number}</span> {i.step[0]?.toUpperCase()+i.step?.slice(1)}</p>)}
+            
+            <div className="imageLoad">
+                <Review 
+                    name={food.name}
+                    image={food.image}
+                    summary={food.summary}
+                    points={food.points}
+                    healthScore={food.healthScore}
+                    instructionsObject={instructionsObject}
+                    dietNames={dietNames}
+                    errors={errors}
+                />                    
             </div>
-            <br/>
+
+            
         </div>
     )
 }

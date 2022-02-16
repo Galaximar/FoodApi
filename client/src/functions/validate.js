@@ -43,7 +43,6 @@ export function validate(input) {
         errors.dietTypes = 'Diet Type is required (at least 1)';
         totalErrors++;
     } else totalErrors--;
-
     if(input.instructionsObject?.length===0){
         errors.instructions = 'Instructions is required (at least 1)';
         totalErrors++;
