@@ -53,6 +53,27 @@ export const CreateRecipe=()=>{
     }
 
     let history=useNavigate();
+    const errorSubmit=()=>{
+        let err="";
+        for (const key in errors) {
+            if(key!=="existError"){
+                if(typeof(errors[key])==="object"&&errors[key.length]) err+=", "+errors[key].join("");
+                if(typeof(errors[key])==="string") err+=", "+errors[key]
+            }
+        }
+        let messageError=" is required";
+        if(!food.name) err+=", Name"+messageError
+        if(!food.points) err+=", Points"+messageError
+        if(!food.healthScore) err+=", Health Score"+messageError
+        err=err.slice(2)
+        
+        swal({
+            title:"Empty fields needed",
+            text:err,
+            icon:"info",
+            
+        })
+    }
     const handleSubmit=(e)=>{
         e.preventDefault()
         dispatch(createRecipe({...food,instructions:[{steps:instructionsObject}]}))
@@ -73,6 +94,7 @@ export const CreateRecipe=()=>{
     return (
         <div className="conteinerCreate formCreate1">
             <div>
+            <h2 className="subtitle dataTitle">Information to create</h2>
                 <form autoComplete="off" onSubmit={handleSubmit}>
                     <div>
                         <div className="bg-form1">
@@ -80,7 +102,7 @@ export const CreateRecipe=()=>{
                                 return (
                                     <div key={i} className="conteinerInputCreate1">
                                         <div className="inputCreate1">
-                                            <label>{x[0].toUpperCase()+x.slice(1)}</label> 
+                                            <label>{x[0].toUpperCase()+x.slice(1)}</label>
                                             <input className={`${typeof(errors[x])==='object'?(errors[x].length)&&"danger":errors[x]&&"danger"} inputCreate`} type="text" name={x} value={food[x]} onChange={handleInputChange}/>
                                         </div>
                                         <div className="error">
@@ -107,7 +129,7 @@ export const CreateRecipe=()=>{
                                     })}
                             </div>
                             <div className="submitRecipe">
-                                {!errors.existError? <input value="Create recipe" className="submitRecipeButton" type="submit"/>:<label className="noSubmitButton">Create Recipe</label>}
+                                {!errors.existError? <input value="Create recipe" className="submitRecipeButton" type="submit"/>:<label onClick={errorSubmit} className="noSubmitButton">Create Recipe</label>}
                             </div>
                         </div>
 
@@ -134,6 +156,7 @@ export const CreateRecipe=()=>{
 
             
             <div className="imageLoad">
+            <h2 className="subtitle previewTitle">Preview</h2>
                 <Review 
                     name={food.name}
                     image={food.image}
@@ -143,6 +166,7 @@ export const CreateRecipe=()=>{
                     instructionsObject={instructionsObject}
                     dietNames={dietNames}
                     errors={errors}
+                    option="divImg"
                 />                    
             </div>
 

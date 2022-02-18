@@ -22,9 +22,9 @@ export const SearchDataBase=()=>{
         dispatchs();
     },[dispatch,value])
     return (
-        <div >
+        <div className="dbForm">
             <form >
-                <select name="databaseOrApi" onChange={handleChange}>
+                <select className="filters" name="databaseOrApi" onChange={handleChange}>
                     <option value="none">Database or Api</option>
                     <option value="searchDb">Database</option>
                     <option value="searchApi">Api</option>

@@ -147,6 +147,23 @@ meter:-moz-meter-sub-sub-optimum::-moz-meter-bar {
   position: relative;
   height: 200px;
 }
+.divImg img {
+  display: block;
+  margin: auto;
+  height: 100%;
+  border-radius: 15px;
+  max-width: calc(100% - 20px);
+  min-width: calc(70% - 20px);
+}
+.divImgLoad{
+  position: relative;
+  height: 200px;
+}
+.divImgLoad img{
+  position: absolute;
+  height: 100%;
+  width: 100%;
+}
 .divP{
   display: flex;
   justify-content: center;
@@ -170,11 +187,6 @@ meter:-moz-meter-sub-sub-optimum::-moz-meter-bar {
 }
 .moreInfo:hover{
   background-color: white;
-}
-.divImg img {
-  position: absolute;
-  height: 100%;
-  width: 100%;
 }
 .searchBar {
   display: flex;
@@ -310,15 +322,22 @@ input.danger {
   max-width: calc(100% - 15px);
 }
 .summary {
+  margin-left: 20px;
   grid-row: 4 ;  
+  overflow-wrap: break-word;
+  margin-right: 20px;
+}
+.fatherizq{
+  grid-column: 1/2;
+  min-width: 0;
 }
 .steps {
   grid-column-start: 2;
 }
-.steps div {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.steps span {
+  text-align: center;
+  line-height: 50px;
+  display: inline-block;
   background-color: greenyellow;
   color: aliceblue;
   width: 50px;
@@ -356,7 +375,31 @@ input.danger {
 .inputCreate input {
   width: 100%;
 }
-
+.scoreTitle{
+  font-size: 22px;
+}
+.healthScore{
+  color: red;
+}
+.pointsScore{
+  color: rgb(235, 164, 10);
+}
+.filters {
+  background-color: rgba(95, 94, 92, 0.7);
+  width: calc(100% - 20px);
+  text-align: center;
+  border-radius: 10px;
+  font-size: 16px;
+}
+.filter form {
+  width: 100%;
+}
+.dbForm{
+  width: 100%;
+}
+.titleFilter{
+  margin-left: 10px;
+}
 .formCreate1 {
   display: grid;
   grid-template-columns: repeat(2,1fr);
@@ -570,6 +613,7 @@ input.danger {
   margin-left: 15px;
   border-radius: 10px;
   text-align: center;
+  font-size: 22px;
 }
 
 .gridCards {
@@ -589,12 +633,24 @@ input.danger {
 .bg-form1 {
   width: calc(100% - 10px);
   margin-left: 10px;
-  margin-top: 40px;
+  margin-top: 10px;
   height: auto;
   margin-bottom: 10px;
   background-color: rgb(235, 205, 141,0.9);
   border: 1px solid black;
   border-radius: 8px;
+}
+.dataTitle{
+  background-color: rgb(235, 205, 141,0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0px;
+  border-radius: 10px;
+  font-size: 30px;
+  width: calc(100% - 10px);
+  margin-left: 10px;
+  height: 30px;
 }
 .previewTitle{
   display: flex;

@@ -3,6 +3,7 @@ import {useDispatch, useSelector} from 'react-redux'
 import { getAllFood, loading } from "../redux/actions/actions";
 import { Link } from 'react-router-dom';
 import { Loading } from "./Loading";
+import { ImageNotLoad } from "./ImageNotLoad";
 
 export const CardFood=()=>{
     const dispatch= useDispatch();
@@ -10,12 +11,7 @@ export const CardFood=()=>{
     let start=useSelector(state=>state.start)
     let end=useSelector(state=>state.end);
     let [hover,setHover]=useState({action:"",id:-1});
-    let [errorImg,setErrorImg]=useState({error:"",id:[]});
     let [loading,setLoading]=useState(true);
-    const imgNotFound=(e,f)=>{
-        let ant=[...errorImg.id]
-        setErrorImg({error:"imgNotLoad",id:[...ant,f.id]});
-    }
     const mouseEnter=(e,f)=>{
         setHover({action:"enter",id:f.id});
     }
@@ -48,7 +44,7 @@ export const CardFood=()=>{
                                 </p>
                                 <Link to={`info/${f.id}`}><button className="moreInfo">More Info</button></Link>
                             </div>:<div>
-                                <div className="divImg">{(errorImg.error==="imgNotLoad"&&errorImg.id.find(x=>x===f.id))?<img src="https://cdn.dribbble.com/users/966009/screenshots/2630351/404-donut-dribble.jpg" alt="ImgNotFound"/>:<img onError={(e)=>imgNotFound(e,f)} src={f.image} alt={f.name}/>}</div>
+                                <ImageNotLoad f={f} option="divImgLoad"/>
                                 <div>
                                     <p className="titleInfoCard divP">
                                         {f.name}

@@ -54,29 +54,29 @@ export const Filter = ()=>{
     return (
         <div className="filter">
             <Search />
-            <label>Search by Db or Api</label>
+            <label className="titleFilter">Search by Db or Api</label>
             <SearchDataBase />
-            <label>Order Alphabetic</label>
+            <label className="titleFilter">Order Alphabetic</label>
             <form id="orderAlphabetic">
-                <select name="orderAlphabetic" onChange={handleChangeOrderByAbc}>
+                <select  className="filters" name="orderAlphabetic" onChange={handleChangeOrderByAbc}>
                     <option value="none">Order (a-z)</option>
                     <option value="asc">Ascendent</option>
                     <option value="dsc">Descendent</option>
                 </select>
             </form>
-            <label>Order by Points</label>
+            <label className="titleFilter">Order by Points</label>
             <form id="orderPoints">
-                <select name="orderPoints" onChange={handleChangeOrderByPoints}>
+                <select className="filters" name="orderPoints" onChange={handleChangeOrderByPoints}>
                     <option value="none">Order By Points</option>
                     <option value="ascPoints">Ascendent</option>
                     <option value="dscPoints">Descendent</option>
                 </select>
             </form>
 
-            <label>Filter by Diet Types</label>
+            <label className="titleFilter">Filter by Diet Types</label>
 
             <form id="dietForm">
-                <select name="dietFilter" onChange={handleAgreeDiet}>
+                <select className="filters" name="dietFilter" onChange={handleAgreeDiet}>
                     <option value="diets">Diets</option>
                 {dietData?.map(({dietType:d},i)=>{
                     return <option key={i} value={d}>{d[0].toUpperCase()+d.slice(1)}</option>
