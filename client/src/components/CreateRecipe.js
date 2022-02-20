@@ -52,6 +52,15 @@ export const CreateRecipe=()=>{
     }));
     }
 
+    const deleteStep=(e,i)=>{
+        let deletedStep=instructionsObject.filter(s=>s.number!==i);
+        for (let it=i-1;it<deletedStep.length;it++){
+            if(deletedStep[it]) deletedStep[it].number-=1;
+        }
+        setInstructionsObject(deletedStep);
+        setNumberStep(--numberStep);
+    }
+
     let history=useNavigate();
     const errorSubmit=()=>{
         let err="";
@@ -93,7 +102,7 @@ export const CreateRecipe=()=>{
     },[dispatch,foodId])
     return (
         <div className="conteinerCreate formCreate1">
-            <div>
+            <div className="createIzq">
             <h2 className="subtitle dataTitle">Information to create</h2>
                 <form autoComplete="off" onSubmit={handleSubmit}>
                     <div>
@@ -143,12 +152,12 @@ export const CreateRecipe=()=>{
                 <form autoComplete="off" onSubmit={stepAgree}>
                     <label className="titleFont">Steps  </label><br/>
                     {errors.instructions&&<span className="error danger"><p>{errors.instructions}</p></span>}<br/><input className="mediumFont inputStep" type="text" value={food.instructions} name="instructions" onChange={handleInputChange}/>
-                    <input className="mediumFont" name="instructions" type="submit" value="Agree"/>
+                    <input className="mediumFont addSteep" name="instructions" type="submit" value="Agree"/>
                 </form>
                 </div>
 
                 <div>
-                    {instructionsObject?.map(i=><p className="stepsAgree" key={i.number}><span className="numberStep">{i.number}</span>{i.step[0]?.toUpperCase()+i.step?.slice(1)}</p>)}
+                    {instructionsObject?.map(i=><p className="stepsAgree" key={i.number}><span className="numberStep">{i.number}</span>{i.step[0]?.toUpperCase()+i.step?.slice(1)}<span className="closeStep" onClick={(e)=>deleteStep(e,i.number)}>X</span></p>)}
                 </div>
                 <br/>
             </div>

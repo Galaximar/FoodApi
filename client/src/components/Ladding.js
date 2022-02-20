@@ -28,7 +28,6 @@ export const Ladding = ()=>{
                 <Link to="/food">
                     Start
                 </Link>
-                
             </div>
         </div>
     )
