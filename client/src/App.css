@@ -56,6 +56,40 @@ body {
   top: 0px;
   z-index: 20000; 
 }
+.navContainer{
+  position: relative;
+}
+.linkedin{
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.github{
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+.github img {
+  width: 120px;
+  height: 8vh;
+}
+.linkedin img {
+  width: 120px;
+  height: 8vh;
+}
+.notFound{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 92vh;
+}
+.notFound h2 {
+  border-top: 10px solid rgb(230, 169, 16);
+  border-bottom: 10px solid rgb(230, 169, 16);;
+  background-color: rgb(243, 235, 215);
+  padding: 100px;
+  border-radius: 15px;
+}
 .active{
   display: flex;
   align-items: center;
@@ -125,10 +159,12 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  top: 0;
+  left: 0;
   height: 100%;
   width: 100%;
-  opacity: 0.9;
-  background-color: black;
+  border-top: 6px solid rgb(235, 164, 10);
+  background-color: rgba(0, 0, 0, 0.9);
 }
 .onHover p {
   color: rgb(243, 235, 215,0.9);
@@ -234,17 +270,24 @@ meter:-moz-meter-sub-sub-optimum::-moz-meter-bar {
   grid-template-columns: repeat(2,1fr);
 }
 .landdingIzq {
-  text-overflow:ellipsis;
   background-color: rgba(95, 94, 92, 0.7);
   border-radius: 20px;
+  color: rgb(243, 235, 215,0.9);
+  text-align: center;
+  position: relative;
   margin: 10px;
-  padding: 5% 0;
 }
-.information {
-  padding: 10% 0;
+.tecnologies{
+  position: absolute;
+  bottom: 20px;
+  background-color: rgb(235, 164, 10);
+}
+.information h2 {
+  background-color: rgb(235, 164, 10);
+  margin-top: 20px;
 }
 .landdingIzq img {
-  width: 250px;
+  width: 400px;
   margin: 5px;
   border-radius: 20px;
   float: left;
@@ -273,7 +316,7 @@ meter:-moz-meter-sub-sub-optimum::-moz-meter-bar {
   cursor: pointer;
 }
 .landdingDer a:hover {
-  background: linear-gradient(135deg,rgb(249, 203, 164),rgb(243, 235, 215,0.9));
+  background: linear-gradient(135deg,rgb(235, 164, 10),rgb(243, 235, 215,0.9));
 }
 .landdingDer img {
   width: 500px;
@@ -547,18 +590,22 @@ input.danger {
 .dietTypesTitle p {
   margin: 0px;
 }
+.containerSteps{
+  min-width: 0px;
+}
 .numberStep {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  display: inline-block;
   background-color: rgba(95, 94, 92, 0.7);
   color: rgb(243, 235, 215);
-  width: 35px;
+  display: inline-block;
   height: 35px;
+  margin-top: 2px;
+  width: 35px;
+  text-align: center;
   line-height: 35px;
   border-radius: 50%;
   font-size: 25px;
-  margin-left: 20px;
+  margin-left: 10px;
 }
 .addSteep{
   background-color: rgb(235, 164, 10,0.7);
@@ -584,9 +631,10 @@ input.danger {
   align-items: center;
   margin-right: 15px;
   margin-left: 15px;
-  display: flex;
-  height: 60px;
+  height: 100%;
   position: relative;
+  overflow-wrap: break-word;
+  min-width: 0;
   border-radius: 8px;
 }
 .nav a:hover{
@@ -647,11 +695,64 @@ input.danger {
   text-align: center;
   font-size: 22px;
 }
+.editBut{
+  position: absolute;
+  top: 20px;
+  height: 30px;
+  left: 20px;
+  font-size: 20px;
+  background-color: rgb(235, 164, 10);
+  padding-left: 10px;
+  padding-right: 10px;
+  cursor: pointer;
+  line-height: 20px;
+  border: none;
+  border-radius: 15px;
+  color: rgb(243, 235, 215,0.9);
+}
 
+.noRecBut{
+  position: absolute;
+  top: 20px;
+  text-align: center;
+  height: 30px;
+  left: 20px;
+  right: 20px;
+  font-size: 20px;
+  background-color: rgb(235, 164, 10);
+  padding-left: 10px;
+  padding-right: 10px;
+  line-height: 30px;
+  border: none;
+  border-radius: 15px;
+  color: rgb(243, 235, 215,0.9);
+}
+.deleteBut{
+  background-color: rgb(204, 102, 102);
+  position: absolute;
+  top: 20px;
+  height: 30px;
+  right: 20px;
+  font-size: 20px;
+  padding-left: 10px;
+  padding-right: 10px;
+  cursor: pointer;
+  line-height: 20px;
+  border: none;
+  border-radius: 15px;
+  color: rgb(243, 235, 215,0.9);
+}
+.isDb{
+  border: 2px solid rgb(235, 164, 10);
+}
+.editBut:hover{
+  background-color: rgb(243, 235, 215,0.9);
+  color: black;
+}
 .gridCards {
   display: grid;
   align-items: start;
-  grid-template-columns: 30% 70%
+  grid-template-columns: 30% 70%;
 }
 .inputCreate {
   background-color: rgba(95, 94, 92, 0.7);
@@ -699,12 +800,13 @@ input.danger {
 }
 .closeStep{
   cursor: pointer;
-  position: absolute;
-  right: 0;
-  height: 30px;
-  width: 30px;
+  display: inline-block;
+  height: 25px;
+  width: 25px;
   text-align: center;
-  color: rgb(243, 235, 215,0.9);;
+  font-size: 20px;
+  line-height: 25px;
+  color: rgb(243, 235, 215,0.9);
   border-radius: 50%;
   background-color: rgb(204, 102, 102);;
   border: 1px solid rgb(243, 235, 215,0.9);;

@@ -43,8 +43,8 @@ export const Pagination = ()=>{
         <div className="containerPag">
             <div className="next-prev">
             {start>0&&<span id="previous" className="spanButton" onClick={handlePrev}>{"<"}</span>}
-            {arrNumbers.map((n,i)=>((i===0||i===arrNumbers.length-1)||(i+1>=numberStart&&i+1<=numberStart+4))?
-            <button className={`${(start/9===n-1)&&"pagSelected"} buttonsPag`} key={n} value={n} onClick={handleClickButton}>{n}</button>:null)}
+            {console.log(numberStart)}
+            {arrNumbers.map((n,i)=><button className={`${(start/9===n-1)&&"pagSelected"} buttonsPag`} key={n} value={n} onClick={handleClickButton}>{n}</button>)}
             {foods.length>end&&<span id="next" className="spanButton" onClick={handleNext}>{">"}</span>}
             </div>
         </div>

@@ -6,6 +6,7 @@ export const Ladding = ()=>{
         <div className="landdingContainer">
             <div className="landdingIzq">
                 <div className="information">
+                    <h2>Food Api</h2>
                     <img src={logo} alt="img"/>
                     <p>
                         Food Api es una SPA (Simple Page Aplication), la cual
@@ -15,11 +16,15 @@ export const Ladding = ()=>{
                         poder filtrar por elementos de la Api y la Base de Datos. También
                         se puede ver la información de cada receta, en la cual se encuentran
                         toda la información mencionada anteriormente más los pasos y un resumen
-                        de la comida.
+                        de la comida, así como editar y borrar recetas únicamente creadas por el usuario.
                         <br/>
                         <br/>
-                        Mi nombre es Marcelo Gottardini, FullStack Web Developer,
-                        manejo teconologías como: 
+                        <div className="tecnologies">
+                            <span>
+                            En este proyecto se usaron las siguientes tecnologías:
+                            HTML5,CSS3,JavaScript,React Js,Redux,Express,PostgreSQL,Sequelize y Git
+                            </span>
+                        </div>
                     </p>
                 </div>
             </div>

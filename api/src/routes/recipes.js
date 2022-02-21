@@ -18,7 +18,7 @@ router.get("/",(req,res)=>{
         const {name,searchDb,searchApi} = req.query;
         let promiseApi=[];
         if(!searchDb){
-            promiseApi=axios.get(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${apiKey}&addRecipeInformation=true&number=10`)
+            promiseApi=axios.get(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${apiKey}&addRecipeInformation=true&number=60`)
             .then(({data})=>{
                 let info=data.results.map(f=>{
                     return {
@@ -69,8 +69,8 @@ router.get("/:idFood",async (req,res)=>{
     try {
         const {idFood}=req.params;
         let data;
-
-        if(isNaN(idFood)) {
+        const isUUID = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/;
+        if(isUUID.test(idFood)) {
             data= await Recipes.findOne({
                 include: Diets,
                 where: {
@@ -82,6 +82,7 @@ router.get("/:idFood",async (req,res)=>{
         } else {
             data=await axios.get(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${apiKey}&addRecipeInformation=true&number=10`)
             data=data.data.results.find(r=>r.id===idFood*1)
+            console.log("aaa")
             data= {
                 name:data.title,
                 image:data.image,
@@ -103,6 +104,24 @@ router.post("/:foodId/diet/:dietId",async (req,res)=>{
         const {foodId,dietId} = req.params;
         const food = await Recipes.findByPk(foodId);
         await food.addDiet(dietId);
+        res.sendStatus(200);
+    } catch (error) {
+        console.log(error);
+    }
+})
+router.get("/dietTypes/all",async (req,res)=>{
+    try {
+        const diets = await Diets.findAll();
+        res.send(diets);
+    } catch (error) {
+        console.log(error);
+    }
+})
+router.put("/update/:foodId/diet/:dietId",async (req,res)=>{
+    try {
+        const {foodId,dietId} = req.params;
+        const food = await Recipes.findByPk(foodId);
+        await food.removeDiet(dietId)
         res.sendStatus(200);
     } catch (error) {
         console.log(error);
@@ -137,6 +156,45 @@ router.post("/diet", async (req,res)=>{
             dietsData.push(await Diets.create({dietType:types[diet]}));
         }
         res.send(dietsData);
+    } catch (error) {
+        console.log(error);
+    }
+})
+router.put("/update/:foodId", async (req,res)=>{
+    try {
+        const {foodId}=req.params;
+        const {values}=req.body;
+
+        for (const key in values) {
+            await Recipes.update({
+                [key]: values[key]
+            }, {
+                    where: {
+                        id: foodId
+                    },
+                    include: Diets
+            })
+        }
+        const newRecipe=await Recipes.findOne({
+            include: Diets,
+                where: {
+                    id: foodId
+                }
+        });
+        res.send(newRecipe);
+    } catch (error) {
+        console.log(error);
+    }
+})
+router.delete("/delete/:foodId", async (req,res)=>{
+    try {
+        const {foodId}=req.params;
+        await Recipes.destroy({
+            where: {
+                id:foodId
+            }
+            })
+        res.status(200).json({succes:true});
     } catch (error) {
         console.log(error);
     }

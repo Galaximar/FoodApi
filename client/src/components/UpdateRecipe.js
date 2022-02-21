@@ -1,24 +1,37 @@
 import React, { useEffect, useState } from "react";
 import {useDispatch, useSelector} from 'react-redux'
 import { validate } from "../functions/validate";
-import { createRecipe, getDietTypes, enlaceFoodWithDiet } from "../redux/actions/actions";
+import { createRecipe, dietTypes, enlaceFoodWithDiet, foodInfo, removeDiet, updateRecipe } from "../redux/actions/actions";
 import swal from "sweetalert";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Review } from "./Review";
 
-const data=["name","image","summary","points","healthScore"]
 
-let initialStates={name:"",image:"",summary:"",points:"",healthScore:"",instructions:"",dietTypes:[]}
-
-export const CreateRecipe=()=>{
+export const UpdateRecipe=({name,image,summary,points,healthScore,instructionsArr,diets,id:foodId,dietTypes})=>{
+    
+    const data=["name","image","summary","points","healthScore"];
+    let initialStates={name,image,summary,points,healthScore,instructions:"",dietTypes:[...dietTypes]};
     const dietData=useSelector(state=>state.dietTypes);
-    const foodId=useSelector(state=>state.foodCreatedId)
     let [food,setFood]=useState({...initialStates});
-    let [numberStep,setNumberStep]=useState(1);
-    let [instructionsObject,setInstructionsObject]=useState([])
+    let [numberStep,setNumberStep]=useState(instructionsArr[instructionsArr.length-1].number+1);
+    let [instructionsObject,setInstructionsObject]=useState(instructionsArr)
     let [errors, setErrors] = useState({...initialStates,existError:true});
-    let [dietNames,setDietNames]=useState([]);
+    let [dietNames,setDietNames]=useState(diets);
     const dispatch=useDispatch();
+
+
+    let arrCheck=document.querySelector(".dietTypes")//[0].children[0].checked=true
+    if(arrCheck){
+        arrCheck=arrCheck.children
+        for(let i=0;i<arrCheck.length;i++){
+            let found=dietNames.find(d=>d===arrCheck[i].children[0].name)
+            if(found) {
+                arrCheck[i].children[0].checked=true
+            }
+        }
+    }
+
+
     const stepAgree=(e)=>{
         e.preventDefault()
         if(food.instructions){
@@ -27,9 +40,12 @@ export const CreateRecipe=()=>{
             food.instructions=""
         }
     }
+
     useEffect(()=>{
         setErrors(validate({...food,instructionsObject}));
     },[instructionsObject])
+
+
     const handleInputChange = function(e,option){
     let arr=[...food.dietTypes];
     if(option!=="checkbox") {
@@ -83,23 +99,15 @@ export const CreateRecipe=()=>{
             
         })
     }
-    const handleSubmit=(e)=>{
-        e.preventDefault()
-        dispatch(createRecipe({...food,instructions:[{steps:instructionsObject}]}))
-        swal({
-            title:"Recipe Create",
-            text:"You want to create another recipe?",
-            icon:"success",
-            buttons:["No","Create Another"],
-        }).then((r)=>{
-            if(r) document.location.reload();
-            else history("/food");
+    const handleSubmit=async(e)=>{
+        dietData.forEach(async d =>{
+            await dispatch(removeDiet(foodId,d.id))
+            if(food.dietTypes.find(x=>x===d.id)) await dispatch(enlaceFoodWithDiet(foodId,d.id))
         })
+        dietTypes=[...food.dietTypes];
+        await dispatch(updateRecipe({...food,foodId,instructions:[{steps:instructionsObject}]}))
     }
 
-    useEffect(()=>{
-        food.dietTypes.map((d)=>dispatch(enlaceFoodWithDiet(foodId,d)))
-    },[dispatch,foodId])
     return (
         <div className="conteinerCreate formCreate1">
             <div className="createIzq">
@@ -138,7 +146,7 @@ export const CreateRecipe=()=>{
                                     })}
                             </div>
                             <div className="submitRecipe">
-                                {!errors.existError? <input value="Create recipe" className="submitRecipeButton" type="submit"/>:<label onClick={errorSubmit} className="noSubmitButton">Create Recipe</label>}
+                                {!errors.existError? <input value="Update recipe" className="submitRecipeButton" type="submit"/>:<label onClick={errorSubmit} className="noSubmitButton">Update Recipe</label>}
                             </div>
                         </div>
 
@@ -156,7 +164,7 @@ export const CreateRecipe=()=>{
                 </form>
                 </div>
 
-                <div>
+                <div className="containerSteps">
                     {instructionsObject?.map(i=><p className="stepsAgree" key={i.number}><span className="numberStep">{i.number}</span>{i.step[0]?.toUpperCase()+i.step?.slice(1)}<span className="closeStep" onClick={(e)=>deleteStep(e,i.number)}>X</span></p>)}
                 </div>
                 <br/>

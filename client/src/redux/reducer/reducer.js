@@ -1,4 +1,4 @@
-import { DATA_FOOD_CREATED, DIET_FILTER, DIET_TYPES, FILTER_TYPES, FOOD_INFO, GET_ALL_FOOD, LOADING, ORDERaz, ORDER_BY_POINTS } from "../actions/actions";
+import { DATA_FOOD_CREATED, DATA_FOOD_UPDATE, DIET_FILTER, DIET_TYPES, FILTER_TYPES, FOOD_DELETED, FOOD_INFO, GET_ALL_FOOD, GET_DIET_TYPES, LOADING, ORDERaz, ORDER_BY_POINTS } from "../actions/actions";
 import { START } from "../actions/actions";
 import { END } from "../actions/actions";
 
@@ -22,6 +22,8 @@ const reducer = (state = initialState, action) => {
         case GET_ALL_FOOD:
             foodOriginal=action.payload;
             return {...state,food:action.payload}
+        case FOOD_DELETED:
+            return {...state,food:state.food.filter(f=>f.id!==action.payload)}
         case LOADING:
             foodOriginal=action.payload
             return {...state,food:action.payload}
@@ -87,8 +89,13 @@ const reducer = (state = initialState, action) => {
         case DIET_TYPES:
             let dietsData=action.payload;
             return {...state,dietTypes:dietsData}
+        case GET_DIET_TYPES:
+            let dietsDataGet=action.payload;
+            return {...state,dietTypes:dietsDataGet}
         case DATA_FOOD_CREATED:
             return {...state,foodCreatedId:action.payload.id}
+        case DATA_FOOD_UPDATE:
+            return {...state}
         case DIET_FILTER:
             let dietsReciveds=action.payload;  
             let foodDiet=foodOriginal

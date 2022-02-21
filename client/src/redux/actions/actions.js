@@ -10,6 +10,9 @@ export const FILTER_TYPES='FILTER_TYPES';
 export const DATA_FOOD_CREATED='DATA_FOOD_CREATED';
 export const FOOD_INFO='FOOD_INFO';
 export const LOADING='LOADING';
+export const DATA_FOOD_UPDATE='DATA_FOOD_UPDATE';
+export const GET_DIET_TYPES='GET_DIET_TYPES';
+export const FOOD_DELETED='FOOD_DELETED';
 
 export const getAllFood = (name,searchOption) => dispatch => {
     if(searchOption==="searchDb"){
@@ -73,6 +76,24 @@ export const dietTypes = () => dispatch => {
         dispatch({ type: DIET_TYPES, payload: json });
     }).catch(e=>console.log(e));
 };
+export const getDietTypes = () => dispatch => {
+    return fetch(`http://localhost:3001/api/recipes/dietTypes/all`)
+        .then(response => response.json())
+        .then(json => {
+        dispatch({ type: GET_DIET_TYPES, payload: json });
+    }).catch(e=>console.log(e));
+};
+export const deleteRecipeFetch = (idRecipe) => dispatch => {
+    let options={
+        method: "DELETE"
+    }
+    return fetch(`http://localhost:3001/api/recipes/delete/${idRecipe}`,options)
+        .then(response => response.json())
+        .then(json => {
+            dispatch({type: FOOD_DELETED, payload: idRecipe})
+        })
+        .catch(e=>console.log(e));
+};
 export const dietFilter = (value) => dispatch => {
     return dispatch({ type: DIET_FILTER, payload: value })
 };
@@ -94,9 +115,30 @@ export const createRecipe = ({name,image,summary,points,healthScore,instructions
         dispatch({type: DATA_FOOD_CREATED, payload: json})
     }).catch(e=>console.log(e));
 };
+export const updateRecipe = ({name,image,summary,points,healthScore,instructions,foodId}) => dispatch => {
+    let options={
+        method: "PUT",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+            },
+        body: JSON.stringify({values:{name,image,summary,points,healthScore,instructions}})
+    }
+        return fetch(`http://localhost:3001/api/recipes/update/${foodId}`,options)
+        .then(response => response.json())
+        .then(json => {
+        dispatch({type: DATA_FOOD_UPDATE, payload: json})
+    }).catch(e=>console.log(e));
+};
 export const enlaceFoodWithDiet = (foodId,dietId) => dispatch => {
     let options={
         method: "POST"
     }
     return fetch(`http://localhost:3001/api/recipes/${foodId}/diet/${dietId}`,options).catch(e=>console.log(e))
+};
+export const removeDiet = (foodId,dietId) => dispatch => {
+    let options={
+        method: "PUT"
+    }
+    return fetch(`http://localhost:3001/api/recipes/update/${foodId}/diet/${dietId}`,options).catch(e=>console.log(e))
 };
